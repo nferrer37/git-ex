@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Employee Database</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Employee Management System</h1>
+    </header>
+
+    <div id="stickyTable">
+        <form id="empInfo">
+            <fieldset >
+                <legend>Employee Info</legend>
+
+                <label for="fname">First name: </label>
+                <input type="text" id="fname" name="fname" maxlength="20" onfocus="enableReset()" onblur="disableReset()" required>
+                <label for="lname">Last name: </label>
+                <input type="text" id="lname" name="lname" maxlength="20" onfocus="enableReset()" required>
+                <label for="empId">Employee ID: </label>
+                <input type="text" id="empId" name="empId" placeholder="00000" minlength="1" maxlength="5" onfocus="enableReset()" onblur="disableReset()" readonly><br><br>
+            
+                <label for="address">Home Address: </label>
+                <input type="text" id="address1" name="address1" size="16" onfocus="enableReset()" onblur="disableReset()" required>
+                <input type="text" id="address2" name="address2" size="5" onfocus="enableReset()" onblur="disableReset()" required>
+                <input type="text" id="address3" name="address3" size="1" minlength="2" maxlength="2" onfocus="enableReset()" onblur="disableReset()" required>
+                <input type="text" id="address4" name="address4" size="1" minlength="2" maxlength="2" onfocus="enableReset()" onblur="disableReset()" required>
+                <label for="phone">Phone Number: </label>
+                <label for="phoneParenthesis1">(</label>
+                <input type="text" id="phoneZip" name="phone1" size="1" minlength="3" maxlength="3" placeholder="000" onfocus="enableReset()" onblur="disableReset()" required>
+                <label for="phoneParenthesis2">)</label>
+                <input type="text" id="phoneThree" name="phone2" size="1" minlength="3" maxlength="3" placeholder="000" onfocus="enableReset()" onblur="disableReset()" required>
+                <label for="phoneDash">-</label>
+                <input type="text" id="phoneFour" name="phone3" size="1" minlength="4" maxlength="4" placeholder="0000" onfocus="enableReset()" onblur="disableReset()" required><br><br>
+    
+                <label for="email">Email Address: </label>
+                <input type="text" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="youremail@email.com" readonly disabled><br><br>
+    
+                <label for="birthday">Birth Date: </label>
+                <input type="text" id="birthDateMonth" name="birthday1" size="1" placeholder="00" minlength="1" maxlength="2" onfocus="enableReset()" onblur="disableReset()" required>
+                <label for="birthdaySlash">/</label>
+                <input type="text" id="birthDateDay" name="birthday2" size="1" placeholder="00" minlength="1" maxlength="2" onfocus="enableReset()" onblur="disableReset()" required>
+                <label for="birthdaySlash">/</label>
+                <input type="text" id="birthDateYear" name="birthday3" size="1" placeholder="0000" minlength="4" maxlength="4" onfocus="enableReset()" onblur="disableReset()" required>
+                <label for="social">Social Security Number: </label>
+                <input type="text" id="social" name="social" placeholder="000000000" minlength="9" maxlength="9" onfocus="enableReset()" onblur="disableReset()" required>
+            
+            </fieldset>
+            
+        </form><br>
+
+        <div>    
+            <input type="button" id="create" value="Create" form="empInfo" onclick="addEmployee()">
+            <input type="button" id="update" value="Update" form="empInfo" onclick="updateRow()" disabled>
+            <input type="button" id="resetButton" form="empInfo" value="Reset" onclick="clearForm()" ><br>
+            <label for="fileSelect">Select a file:</label>
+            <input type="file" name="fileSelect" accept=".csv" id="fileSelect"><br><br>
+            <button id="process" onclick="processFile()">Process</button>
+            <button id="fetch" onclick="fetchData()">Fetch</button>
+
+        </div><br>
+        
+    
+        <form id="empTableform">
+            <label for="empSearch">Search by Employee ID: </label>
+            <input type="search" id="empSearch" name="empSearch" onkeyup="searchEmp()">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+
+    <table id="table">
+
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Birth Date</th>
+                <th>Phone Number</th>
+                <th>Home Address</th>
+                <th>Social Security Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="empTable">
+
+        </tbody>
+        
+    </table> 
+</body>
+</html>

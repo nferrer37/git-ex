@@ -1,0 +1,13 @@
+table, th, td {
+    border: 1px solid;
+    border-collapse: collapse;
+  }
+
+  tbody > tr:hover {
+    background-color: gray;
+  }
+
+  .editingRow {
+    background-color: yellow;
+    color:red;
+  }
