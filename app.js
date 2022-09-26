@@ -272,7 +272,7 @@ const addEmployee = () => {
         let social = document.forms['empInfo']['social'].value;
         while(!socialCheck(social) || !numberValidation(social)) {
             social = prompt("SSN is not in correct format. Please enter correct SSN to continue: ")
-            if(social.length > 5) {
+            if(social.length > 9) {
                 social = social.slice(0, 9);
             }
         }
@@ -328,7 +328,7 @@ const fiveNumberCheck = (numberCheck) => {
 }
 
 const socialCheck = (social) => {
-    const regex = /(\d{7})/
+    const regex = /(\d{9})/
     var result = regex.test(social)
     return result;
 }
