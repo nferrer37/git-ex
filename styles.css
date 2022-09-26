@@ -3,6 +3,10 @@ table, th, td {
     border-collapse: collapse;
   }
 
+h1 {
+  text-align: center;
+}
+
   tbody > tr:hover {
     background-color: gray;
   }

@@ -22,138 +22,260 @@ window.onload = () => clearForm();
 
 let currentRow = null;
 
+// Reads selected file into client interface
 function processFile() {
 
     //get file
     var file = document.getElementById("fileSelect");
-    
-     var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
-     //check if file is CSV
-     if (regex.test(file.value.toLowerCase())) {
-     //check if browser support FileReader
-        if (typeof (FileReader) != "undefined") {
-       //get table element
-        var myTable = document.getElementById("empTable");
+     
+    // Checking file type extension
+    var fileType = file.value.toLowerCase().split('.')[1];
 
-        //create html5 file reader object
-        var reader = new FileReader();
-        // call filereader. onload function
-        reader.onload = function(e) {
-            var content = reader.result;
-            //split csv file using "\n" for new line ( each row)
-            var lines = content.split("\n");
-
-            //loop all rows
-            for (var count = 1; count < lines.length - 1; count++) {
-                //create a tr element
-                var row = document.createElement("tr");
-                //split each row content
-                var rowContent = lines[count].split(",");
-
-                var contentId = rowContent[0];
-                var contentLname = rowContent[1];
-                var contentFname = rowContent[2];
-                var contentBdate = rowContent[3];
-                var contentPhone = rowContent[4];
-                var contentAddress = rowContent[5].substring(1) + "," + rowContent[6] + "," + rowContent[7].slice(0, -1);
-                var contentSocial = rowContent[8];
-
-                // Checking array length for different addresses when editing
-                // console.log(contentAddress.split(',')[0].split(" "))
-
-                // Variable for adding edit and delete functionality to each row
-                var contentAction = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
-
-            rowArray = [contentId, contentLname, contentFname, contentBdate, contentPhone, contentAddress, contentSocial, "x" /* placeholder for edit/delete buttons*/]
-
-                //loop through all columns of a row
-                for (var i = 0; i < rowArray.length; i++) {
-                   //create td element 
-                    var cellElement = document.createElement("td");
-                    if (count >= 1) {
-                        
-                        cellElement = document.createElement("td");
-                    }
-                    //add a row element as a node for table
-                    var cellContent = document.createTextNode(rowArray[i]);
-                    
-                    cellElement.appendChild(cellContent);
-                    //append row child
-                    row.appendChild(cellElement);
-                    
-                }
-                // Adds edit and delete buttons with functionality to each row
-                row.children[7].innerHTML = contentAction;
-                //append table contents
-                myTable.appendChild(row);
-            }
-        }
-         //call file reader onload
-          reader.readAsText(file.files[0]);
-
-          document.getElementById('fileSelect').disabled = true;
-          document.getElementById('process').disabled = true;
-          document.getElementById('create').disabled = false;
-        }
-        
-        else 
-        {
-              alert("This browser does not support HTML5.");
-        }
-        
+    //check if file is CSV or .Txt
+    if (fileType == 'csv') {
+        readCsv(file);
+    }
+    else if(fileType == 'txt')
+    {
+        readText(file);
     }
     else {
-                alert("Please upload a valid CSV file.");
+        alert("This is not an authorized file type. Please try a CSV or .Txt file!")
     }
-    return false;
-    
     
 }
 
-// class Employee {
+// If the read file is a .CSV file
+const readCsv = (readFile) => {
+    //check if browser support FileReader
+    if (typeof (FileReader) != "undefined") {
+        //get table element
+         var myTable = document.getElementById("empTable");
+ 
+         //create html5 file reader object
+         var reader = new FileReader();
+         // call filereader. onload function
+         reader.onload = function(e) {
+             var content = reader.result;
+             //split csv file using "\n" for new line ( each row)
+             var lines = content.split("\n");
+ 
+             //loop all rows
+             for (var count = 1; count < lines.length - 1; count++) {
+                 //create a tr element
+                 var row = document.createElement("tr");
+                 //split each row content
+                 var rowContent = lines[count].split(",");
+ 
+                 var contentId = rowContent[0];
+                 var contentLname = rowContent[1];
+                 var contentFname = rowContent[2];
+                 var contentBdate = rowContent[3];
+                 var contentPhone = rowContent[4];
+                 var contentAddress = rowContent[5].substring(1) + "," + rowContent[6] + "," + rowContent[7].slice(0, -1);
+                 var contentSocial = rowContent[8];
+ 
+                 // Checking array length for different addresses when editing
+                 // console.log(contentAddress.split(',')[0].split(" "))
+ 
+                 // Variable for adding edit and delete functionality to each row
+                 var contentAction = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
+ 
+             rowArray = [contentId, contentLname, contentFname, contentBdate, contentPhone, contentAddress, contentSocial, "x" /* placeholder for edit/delete buttons*/]
+ 
+                 //loop through all columns of a row
+                 for (var i = 0; i < rowArray.length; i++) {
+                    //create td element 
+                     var cellElement = document.createElement("td");
+                     if (count >= 1) {
+                         
+                         cellElement = document.createElement("td");
+                     }
+                     //add a row element as a node for table
+                     var cellContent = document.createTextNode(rowArray[i]);
+                     
+                     cellElement.appendChild(cellContent);
+                     //append row child
+                     row.appendChild(cellElement);
+                     
+                 }
+                 // Adds edit and delete buttons with functionality to each row
+                 row.children[7].innerHTML = contentAction;
+                 //append table contents
+                 myTable.appendChild(row);
+             }
+         }
+          //call file reader onload
+           reader.readAsText(readFile.files[0]);
+ 
+           document.getElementById('fileSelect').disabled = true;
+           document.getElementById('process').disabled = true;
+           document.getElementById('create').disabled = false;
+           
+         }
+         
+         else 
+         {
+               alert("This browser does not support HTML5.");
+         }
+}
 
-//     constructor(fName, lName, empId, address, birthDate, social, number) {
-//         this.fName = fName;
-//         this.lName = lName;
-//         this.empId = empId;
-//         this.address = address;
-//         this.birthDate = birthDate;
-//         this.social = social;
-//         this.number = number;
-
-//     }
-// }
+// If the read file is a .txt file
+const readText = (readFile) => {
+    //check if browser support FileReader
+    if (typeof (FileReader) != "undefined") {
+        //get table element
+         var myTable = document.getElementById("empTable");
+ 
+         //create html5 file reader object
+         var reader = new FileReader();
+         // call filereader. onload function
+         reader.onload = function(e) {
+             var content = reader.result;
+             //split csv file using "\n" for new line ( each row)
+             var lines = content.split("\n");
+ 
+             //loop all rows
+             for (var count = 1; count < lines.length - 1; count++) {
+                 //create a tr element
+                 var row = document.createElement("tr");
+                 //split each row content
+                 var rowContent = lines[count].split("\t");
+                 console.log(rowContent)
+                 var contentId = rowContent[0];
+                 var contentLname = rowContent[1];
+                 var contentFname = rowContent[2];
+                 var contentBdate = rowContent[3];
+                 var contentPhone = rowContent[4];
+                 var contentAddress = rowContent[5]
+                 var contentSocial = rowContent[6];
+ 
+                 // Checking array length for different addresses when editing
+                 // console.log(contentAddress.split(',')[0].split(" "))
+ 
+                 // Variable for adding edit and delete functionality to each row
+                 var contentAction = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
+ 
+             rowArray = [contentId, contentLname, contentFname, contentBdate, contentPhone, contentAddress, contentSocial, "x" /* placeholder for edit/delete buttons*/]
+ 
+                 //loop through all columns of a row
+                 for (var i = 0; i < rowArray.length; i++) {
+                    //create td element 
+                     var cellElement = document.createElement("td");
+                     if (count >= 1) {
+                         
+                         cellElement = document.createElement("td");
+                     }
+                     //add a row element as a node for table
+                     var cellContent = document.createTextNode(rowArray[i]);
+                     
+                     cellElement.appendChild(cellContent);
+                     //append row child
+                     row.appendChild(cellElement);
+                     
+                 }
+                 // Adds edit and delete buttons with functionality to each row
+                 row.children[7].innerHTML = contentAction;
+                 //append table contents
+                 myTable.appendChild(row);
+             }
+         }
+          //call file reader onload
+           reader.readAsText(readFile.files[0]);
+ 
+           document.getElementById('fileSelect').disabled = true;
+           document.getElementById('process').disabled = true;
+           document.getElementById('create').disabled = false;
+         }
+         
+         else 
+         {
+               alert("This browser does not support HTML5.");
+         }
+}
 
 const addEmployee = () => {
 
     // If the whole form is not empty and the create button is clicked
-    if(!emptyFormEntry(document.forms['empInfo']['fname'].value) && !emptyFormEntry(document.forms['empInfo']['lname'].value) && !emptyFormEntry(document.forms['empInfo']['address1'].value) && !emptyFormEntry(document.forms['empInfo']['address2'].value) && !emptyFormEntry(document.forms['empInfo']['address3'].value) && !emptyFormEntry(document.forms['empInfo']['address4'].value) && !emptyFormEntry(document.forms['empInfo']['phoneZip'].value) && !emptyFormEntry(document.forms['empInfo']['phoneThree'].value) && !emptyFormEntry(document.forms['empInfo']['phoneFour'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateMonth'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateDay'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateYear'].value) && !emptyFormEntry(document.forms['empInfo']['birthDasocialteYear'].value)) {
+    if(!emptyFormEntry(document.forms['empInfo']['fname'].value) && !emptyFormEntry(document.forms['empInfo']['lname'].value) && !emptyFormEntry(document.forms['empInfo']['address1'].value) && !emptyFormEntry(document.forms['empInfo']['address2'].value) && !emptyFormEntry(document.forms['empInfo']['address3'].value) && !emptyFormEntry(document.forms['empInfo']['address4'].value) && !emptyFormEntry(document.forms['empInfo']['phoneZip'].value) && !emptyFormEntry(document.forms['empInfo']['phoneThree'].value) && !emptyFormEntry(document.forms['empInfo']['phoneFour'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateMonth'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateDay'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateYear'].value) && !emptyFormEntry(document.forms['empInfo']['social'].value)) {
         
         // Sets variables for three parts of phone number
         var phoneZip = document.forms['empInfo']['phoneZip'].value;
+    
+        // If number does not match 3 digits or is not a number
+        while(!threeNumberCheck(phoneZip) || !numberValidation(phoneZip)) {
+            phoneZip = prompt("User input was invalid. Please enter a valid three digit number: ")
+        }
+        if(phoneZip.length > 3) {
+            phoneZip = phoneZip.slice(0, 3);
+        }
+
         var phoneThree = document.forms['empInfo']['phoneThree'].value;
+        while(!threeNumberCheck(phoneThree) || !numberValidation(phoneThree)) {
+            phoneThree = prompt("User input was invalid. Please enter a valid three digit number: ")
+        }
+        if(phoneThree.length > 3) {
+            phoneThree = phoneThree.slice(0, 3);
+        }
+
+
         var phoneFour = document.forms['empInfo']['phoneFour'].value;
+        while(!fourNumberCheck(phoneFour) || !numberValidation(phoneFour)) {
+            phoneFour = prompt("User input was invalid. Please enter a valid four digit number: ")
+        }
+        if(phoneFour.length > 4) {
+            phoneFour = phoneFour.slice(0, 4);
+        }
+        
 
         // Sets variables for three parts of birthdate
         var birthDateMonth = checkMonth(document.forms['empInfo']['birthDateMonth'].value);
         var birthDateDay = checkDay(document.forms['empInfo']['birthDateDay'].value);
-
         var birthDateYear = document.forms['empInfo']['birthDateYear'].value;
 
         // Sets variables for four parts of address
         var addressStreet = document.forms['empInfo']['address1'].value;
-        var addressCity = document.forms['empInfo']['address2'].value;
-        var addressState = document.forms['empInfo']['address3'].value;
+        while(!streetCheck(addressStreet)) {
+            addressStreet = prompt("Street portion of address is not in correct format. Please reenter using example format: ")
+        }
+
+        var addressCity = document.forms['empInfo']['address2'].value.charAt(0).toUpperCase() + document.forms['empInfo']['address2'].value.slice(1).toLowerCase();;
+        while(!textCheck(addressCity)) {
+            addressCity = prompt("City name format is incorrect. Please enter correct city name and try again: ")
+            addressCity = addressCity[0].toUpperCase + addressCity.slice(1).toLowerCase();
+        }
+        
+        var addressState = document.forms['empInfo']['address3'].value.toUpperCase();
+        while(!textCheck(addressState)) {
+            addressState = prompt("State abbreviation format is incorrect. Please enter correct city name and try again: ").toUpperCase()
+        }
+        if(addressState.length > 2) {
+                addressState = addressState.slice(0, 2);
+            }
+        
         var addressZip = document.forms['empInfo']['address4'].value;
+        while(!fiveNumberCheck(addressZip) || !numberValidation(addressZip)) {
+            addressZip = prompt("Zip code was invalid. Please enter a valid five digit number: ")
+        }
+        if(addressZip.length > 5) {
+                addressZip = addressZip.slice(0, 5);
+        }
 
         // Finds the form user inputs
-        let firstName = document.forms['empInfo']['fname'].value;
-        let lastName = document.forms['empInfo']['lname'].value;
+        let firstName = document.forms['empInfo']['fname'].value.charAt(0).toUpperCase() + document.forms['empInfo']['fname'].value.slice(1).toLowerCase();
+        let lastName = document.forms['empInfo']['lname'].value.toUpperCase();
         let empId = randomEmpId(1, 99999);
         let address = addressStreet + ", " + addressCity + ", " + addressState + " " + addressZip
         let phone = "(" + phoneZip + ") " + phoneThree + "-" + phoneFour;
         let birthDate = birthDateMonth + "/" + birthDateDay + "/" + birthDateYear;
+
         let social = document.forms['empInfo']['social'].value;
+        while(!socialCheck(social) || !numberValidation(social)) {
+            social = prompt("SSN is not in correct format. Please enter correct SSN to continue: ")
+            if(social.length > 5) {
+                social = social.slice(0, 9);
+            }
+        }
 
         // Finds table element
         let thisTable = document.getElementById('empTable')
@@ -186,6 +308,58 @@ const addEmployee = () => {
     
 }
 
+
+const threeNumberCheck = (numberCheck) => {
+    const regex = /(\d{3})/
+    var result = regex.test(numberCheck)
+    return result;
+}
+
+const fourNumberCheck = (numberCheck) => {
+    const regex = /(\d{4})/
+    var result = regex.test(numberCheck)
+    return result;
+}
+
+const fiveNumberCheck = (numberCheck) => {
+    const regex = /(\d{5})/
+    var result = regex.test(numberCheck)
+    return result;
+}
+
+const socialCheck = (social) => {
+    const regex = /(\d{7})/
+    var result = regex.test(social)
+    return result;
+}
+
+const streetCheck = (street) => {
+    const regex = /(\d+) (\w+[ ,\w]+)/
+    var result = regex.test(street)
+    return result;
+}
+
+const textCheck = (text) => {
+    const regex = /[a-zA-Z]+/
+    var result = regex.test(text)
+    return result;
+}
+// Called when we click on the submit button
+function numberValidation(inputField) {
+
+    var result = true;
+
+    // isNan() function check whether passed variable is number or not
+    if (isNaN(inputField)) {
+
+        result = false;
+
+    } 
+
+    return result
+}
+
+// Checks for empty imput values via formBox
 const emptyFormEntry = (formBox) => {
     var validInput = true
     if(formBox == "") {
@@ -563,9 +737,6 @@ const checkEmptyForm = () => {
     if(document.forms['empInfo']['empId'].value == "" &&
     document.forms['empInfo']['lname'].value == "" &&
     document.forms['empInfo']['fname'].value == "" &&
-    document.forms['empInfo']['birthDateMonth'].value == "" &&
-    document.forms['empInfo']['birthDateDay'].value == "" &&
-    document.forms['empInfo']['birthDateYear'].value == "" &&
     document.forms['empInfo']['phoneZip'].value == "" &&
     document.forms['empInfo']['phoneThree'].value == "" &&
     document.forms['empInfo']['phoneFour'].value == "" &&
@@ -629,7 +800,7 @@ const randomEmpId = (min, max) => {
 
 }
 
-// Searching/filtering for employees by ID number ***Started working on this***
+// Searching/filtering for employees by ID number
 const searchEmp = () => {
     var input, filter, tbody, tr, a, i, txtValue;
     input = document.getElementById('empSearch');
@@ -661,17 +832,31 @@ const searchEmp = () => {
     }
 }
 
+// Writes rows of table data to test.txt. Will overwrite previously written data
 const fetchData = () => {
-    fetch("/echo/json/",
+
+    var tableRow = document.getElementById('empTable').rows;
+    var finalString = "";
+    
+    // Adds each row into string variable and adds new line command to break the end of the row
+    for(i = 0; i < tableRow.length; i++) {
+        finalString += tableRow[i].innerText + '\n';
+    }
+    
+
+    fetch("http://localhost:8080/api",
 {
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin':'*'
     },
     method: "POST",
     
-    body: JSON.stringify(document.getElementById('empTable').rows[0])
+    body: JSON.stringify({name: finalString})
+
 })
-.then(function(res){ console.log(res) })
-.catch(function(res){ console.log(res) })
+.then((res) =>{ console.log("Got it!") })
+.then((res) => { alert('test.txt has been written. Your database file has been saved!')})
+.catch((res) => { console.log("What...why?")} )
 }
