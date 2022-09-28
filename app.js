@@ -197,77 +197,86 @@ const readText = (readFile) => {
 const addEmployee = () => {
 
     // If the whole form is not empty and the create button is clicked
-    if(!emptyFormEntry(document.forms['empInfo']['fname'].value) && !emptyFormEntry(document.forms['empInfo']['lname'].value) && !emptyFormEntry(document.forms['empInfo']['address1'].value) && !emptyFormEntry(document.forms['empInfo']['address2'].value) && !emptyFormEntry(document.forms['empInfo']['address3'].value) && !emptyFormEntry(document.forms['empInfo']['address4'].value) && !emptyFormEntry(document.forms['empInfo']['phoneZip'].value) && !emptyFormEntry(document.forms['empInfo']['phoneThree'].value) && !emptyFormEntry(document.forms['empInfo']['phoneFour'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateMonth'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateDay'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateYear'].value) && !emptyFormEntry(document.forms['empInfo']['social'].value)) {
+    // if(!emptyFormEntry(document.forms['empInfo']['fname'].value) && !emptyFormEntry(document.forms['empInfo']['lname'].value) && !emptyFormEntry(document.forms['empInfo']['address1'].value) && !emptyFormEntry(document.forms['empInfo']['address2'].value) && !emptyFormEntry(document.forms['empInfo']['address3'].value) && !emptyFormEntry(document.forms['empInfo']['address4'].value) && !emptyFormEntry(document.forms['empInfo']['phoneZip'].value) && !emptyFormEntry(document.forms['empInfo']['phoneThree'].value) && !emptyFormEntry(document.forms['empInfo']['phoneFour'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateMonth'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateDay'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateYear'].value) && !emptyFormEntry(document.forms['empInfo']['social'].value)) {
         
-        // Sets variables for three parts of phone number
-        var phoneZip = document.forms['empInfo']['phoneZip'].value;
+    //     // Finds the form user inputs
+    //     let firstName = document.forms['empInfo']['fname'].value.charAt(0).toUpperCase() + document.forms['empInfo']['fname'].value.slice(1).toLowerCase();
+    //     while(!textCheck(firstName)) {
+    //         firstName = prompt("First name not in correct format. Please enter only letter characters and try again:")
+    //         firstName = firstName[0].toUpperCase() + firstName.slice(1).toLowerCase();
+    //     }
+
+    //     let lastName = document.forms['empInfo']['lname'].value.toUpperCase();
+    //     while(!textCheck(lastName)) {
+    //         lastName = prompt("First name not in correct format. Please enter only letter characters and try again:");
+    //         lastName = lastName.toUpperCase();
+    //     }
+        
+    //     // Sets variables for four parts of address
+    //     var addressStreet = document.forms['empInfo']['address1'].value;
+
+    //     // Street is not in proper format
+    //     while(!streetCheck(addressStreet)) {
+    //         addressStreet = prompt("Street portion of address is not in correct format. Please reenter using example format: ")
+    //         // Splits street into array for validation
+    //         var splitAddress = addressStreet.split(' ');
+    //             addressStreet = validateStreet(splitAddress);
+           
+    //     }
+
+    //     var addressCity = document.forms['empInfo']['address2'].value.charAt(0).toUpperCase() + document.forms['empInfo']['address2'].value.slice(1).toLowerCase();;
+    //     while(!textCheck(addressCity)) {
+    //         addressCity = prompt("City name format is incorrect. Please enter correct city name and try again: ")
+    //         addressCity = addressCity[0].toUpperCase() + addressCity.slice(1).toLowerCase();
+    //     }
+        
+    //     var addressState = document.forms['empInfo']['address3'].value.toUpperCase();
+    //     while(!textCheck(addressState)) {
+    //         addressState = prompt("State abbreviation format is incorrect. Please enter correct city name and try again: ").toUpperCase()
+    //     }
+    //     if(addressState.length > 2) {
+    //             addressState = addressState.slice(0, 2);
+    //         }
+        
+    //     var addressZip = document.forms['empInfo']['address4'].value;
+    //     while(!fiveNumberCheck(addressZip) || !numberValidation(addressZip)) {
+    //         addressZip = prompt("Zip code was invalid. Please enter a valid five digit number: ")
+    //     }
+    //     if(addressZip.length > 5) {
+    //             addressZip = addressZip.slice(0, 5);
+    //     }
+
+    //     // Sets variables for three parts of phone number
+    //     var phoneZip = document.forms['empInfo']['phoneZip'].value;
     
-        // If number does not match 3 digits or is not a number
-        while(!threeNumberCheck(phoneZip) || !numberValidation(phoneZip)) {
-            phoneZip = prompt("User input was invalid. Please enter a valid three digit number: ")
-        }
-        if(phoneZip.length > 3) {
-            phoneZip = phoneZip.slice(0, 3);
-        }
+    //     // If number does not match 3 digits or is not a number
+    //     while(!threeNumberCheck(phoneZip) || !numberValidation(phoneZip)) {
+    //         phoneZip = prompt("User input was invalid. Please enter a valid three digit number: ")
+    //     }
+    //     if(phoneZip.length > 3) {
+    //         phoneZip = phoneZip.slice(0, 3);
+    //     }
 
-        var phoneThree = document.forms['empInfo']['phoneThree'].value;
-        while(!threeNumberCheck(phoneThree) || !numberValidation(phoneThree)) {
-            phoneThree = prompt("User input was invalid. Please enter a valid three digit number: ")
-        }
-        if(phoneThree.length > 3) {
-            phoneThree = phoneThree.slice(0, 3);
-        }
+    //     var phoneThree = document.forms['empInfo']['phoneThree'].value;
+    //     while(!threeNumberCheck(phoneThree) || !numberValidation(phoneThree)) {
+    //         phoneThree = prompt("User input was invalid. Please enter a valid three digit number: ")
+    //     }
+    //     if(phoneThree.length > 3) {
+    //         phoneThree = phoneThree.slice(0, 3);
+    //     }
 
-
-        var phoneFour = document.forms['empInfo']['phoneFour'].value;
-        while(!fourNumberCheck(phoneFour) || !numberValidation(phoneFour)) {
-            phoneFour = prompt("User input was invalid. Please enter a valid four digit number: ")
-        }
-        if(phoneFour.length > 4) {
-            phoneFour = phoneFour.slice(0, 4);
-        }
+    //     var phoneFour = document.forms['empInfo']['phoneFour'].value;
+    //     while(!fourNumberCheck(phoneFour) || !numberValidation(phoneFour)) {
+    //         phoneFour = prompt("User input was invalid. Please enter a valid four digit number: ")
+    //     }
+    //     if(phoneFour.length > 4) {
+    //         phoneFour = phoneFour.slice(0, 4);
+    //     }
         
-
-        // Sets variables for three parts of birthdate
-        var birthDateMonth = checkMonth(document.forms['empInfo']['birthDateMonth'].value);
-        var birthDateDay = checkDay(document.forms['empInfo']['birthDateDay'].value);
-        var birthDateYear = document.forms['empInfo']['birthDateYear'].value;
-
-        // Sets variables for four parts of address
-        var addressStreet = document.forms['empInfo']['address1'].value;
-        while(!streetCheck(addressStreet)) {
-            addressStreet = prompt("Street portion of address is not in correct format. Please reenter using example format: ")
-        }
-
-        var addressCity = document.forms['empInfo']['address2'].value.charAt(0).toUpperCase() + document.forms['empInfo']['address2'].value.slice(1).toLowerCase();;
-        while(!textCheck(addressCity)) {
-            addressCity = prompt("City name format is incorrect. Please enter correct city name and try again: ")
-            addressCity = addressCity[0].toUpperCase + addressCity.slice(1).toLowerCase();
-        }
-        
-        var addressState = document.forms['empInfo']['address3'].value.toUpperCase();
-        while(!textCheck(addressState)) {
-            addressState = prompt("State abbreviation format is incorrect. Please enter correct city name and try again: ").toUpperCase()
-        }
-        if(addressState.length > 2) {
-                addressState = addressState.slice(0, 2);
-            }
-        
-        var addressZip = document.forms['empInfo']['address4'].value;
-        while(!fiveNumberCheck(addressZip) || !numberValidation(addressZip)) {
-            addressZip = prompt("Zip code was invalid. Please enter a valid five digit number: ")
-        }
-        if(addressZip.length > 5) {
-                addressZip = addressZip.slice(0, 5);
-        }
-
-        // Finds the form user inputs
-        let firstName = document.forms['empInfo']['fname'].value.charAt(0).toUpperCase() + document.forms['empInfo']['fname'].value.slice(1).toLowerCase();
-        let lastName = document.forms['empInfo']['lname'].value.toUpperCase();
-        let empId = randomEmpId(1, 99999);
-        let address = addressStreet + ", " + addressCity + ", " + addressState + " " + addressZip
-        let phone = "(" + phoneZip + ") " + phoneThree + "-" + phoneFour;
-        let birthDate = birthDateMonth + "/" + birthDateDay + "/" + birthDateYear;
+    //     // Sets variables for three parts of birthdate
+    //     var birthDateMonth = checkMonth(document.forms['empInfo']['birthDateMonth'].value);
+    //     var birthDateDay = checkDay(document.forms['empInfo']['birthDateDay'].value);
+    //     var birthDateYear = document.forms['empInfo']['birthDateYear'].value;
 
         let social = document.forms['empInfo']['social'].value;
         while(!socialCheck(social) || !numberValidation(social)) {
@@ -276,69 +285,109 @@ const addEmployee = () => {
                 social = social.slice(0, 9);
             }
         }
+        social = verifySocial(social);
 
-        // Finds table element
-        let thisTable = document.getElementById('empTable')
-        // Inserts new row into table
-        var row = thisTable.insertRow(-1);
+        // Generates random ID number for new employees
+    //     let empId = randomEmpId(1, 99999);
+    //     let address = addressStreet + ", " + addressCity + ", " + addressState + " " + addressZip
+    //     let phone = "(" + phoneZip + ") " + phoneThree + "-" + phoneFour;
+    //     let birthDate = birthDateMonth + "/" + birthDateDay + "/" + birthDateYear;     
 
-        // New row is given cells for each heading
-        var cellEmpid = row.insertCell(0);
-        var cellLname = row.insertCell(1);
-        var cellFname = row.insertCell(2);
-        var cellBirthdate = row.insertCell(3);
-        var cellNumber = row.insertCell(4);
-        var cellAddress = row.insertCell(5);
-        var cellSocial = row.insertCell(6);
-        var cellAction = row.insertCell(7);
+    //     // Finds table element
+    //     let thisTable = document.getElementById('empTable')
+    //     // Inserts new row into table at end of table
+    //     var row = thisTable.insertRow(-1);
 
-        // Assigning values for each cell
-        cellFname.innerHTML = firstName;
-        cellLname.innerHTML = lastName;
-        cellEmpid.innerHTML = empId;
-        cellAddress.innerHTML = address;
-        cellNumber.innerHTML = phone;
-        cellBirthdate.innerHTML = birthDate;
-        cellSocial.innerHTML = social;
-        cellAction.innerHTML = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
+    //     // New row is given cells for each heading
+    //     var cellEmpid = row.insertCell(0);
+    //     var cellLname = row.insertCell(1);
+    //     var cellFname = row.insertCell(2);
+    //     var cellBirthdate = row.insertCell(3);
+    //     var cellNumber = row.insertCell(4);
+    //     var cellAddress = row.insertCell(5);
+    //     var cellSocial = row.insertCell(6);
+    //     var cellAction = row.insertCell(7);
 
-        clearForm();
-    }
+    //     // Assigning values for each cell
+    //     cellFname.innerHTML = firstName;
+    //     cellLname.innerHTML = lastName;
+    //     cellEmpid.innerHTML = empId;
+    //     cellAddress.innerHTML = address;
+    //     cellNumber.innerHTML = phone;
+    //     cellBirthdate.innerHTML = birthDate;
+    //     cellSocial.innerHTML = social;
+    //     cellAction.innerHTML = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
+
+    //     clearForm();
+    // }
     
     
 }
 
-
+// Checking three digit area code and digits of phone number
 const threeNumberCheck = (numberCheck) => {
     const regex = /(\d{3})/
     var result = regex.test(numberCheck)
     return result;
 }
 
+// Checking last four digits of phone number
 const fourNumberCheck = (numberCheck) => {
     const regex = /(\d{4})/
     var result = regex.test(numberCheck)
     return result;
 }
 
+// Checking five digits of address zip code
 const fiveNumberCheck = (numberCheck) => {
     const regex = /(\d{5})/
     var result = regex.test(numberCheck)
     return result;
 }
 
+// Checking nine digits of ssn
 const socialCheck = (social) => {
     const regex = /(\d{9})/
     var result = regex.test(social)
     return result;
 }
 
+// Checking street address format of 'address number/street name/street suffix'
 const streetCheck = (street) => {
     const regex = /(\d+) (\w+[ ,\w]+)/
     var result = regex.test(street)
     return result;
 }
 
+// When streetCheck function returns false
+const validateStreet = (splitStreet) => {
+
+        var validatedStreet = "";
+     // For each index of split address array
+     for(i = 0; i < splitStreet.length; i++) {
+        // Street Number plus concat space
+        if(i == 0){
+            validatedStreet = splitStreet[i] + ' ';
+
+        }
+        // Street name/title up to last word before suffix plus concat space
+        else if(i > 0 && i <= splitStreet.length - 2) {
+            validatedStreet += splitStreet[i].charAt(0).toUpperCase() + splitStreet[i].slice(1).toLowerCase() + ' ';
+            console.log(validatedStreet)
+
+        }
+        // Street suffix
+        else if(i = splitStreet.length - 1) {
+            validatedStreet += splitStreet[i].charAt(0).toUpperCase() + splitStreet[i].charAt(1);
+            console.log(validatedStreet)
+
+        }
+
+    }
+    return validatedStreet;
+}
+
+// Verifies user input has letter characters only
 const textCheck = (text) => {
     const regex = /[a-zA-Z]+/
     var result = regex.test(text)
@@ -776,17 +825,15 @@ const disableReset = () => {
 
 const randomEmpId = (min, max) => {
 
-    // Form Employee ID Input Box
-    var employeeIdInput = document.forms['empInfo']['empId'].value
     // New employee ID randomized
     var newEmpid = Math.floor(Math.random() * (max - min + 1) ) + min;
 
     // Grabs all rows
     var tableBody = document.getElementById('empTable').rows;
-
+    var arrayEmpid = [];
     // Adding current employee IDs to array to check against
     for(let cell of tableBody) {
-        var arrayEmpid = [];
+        
         arrayEmpid.push(cell.children[0].innerText);
         }
 
@@ -797,6 +844,31 @@ const randomEmpId = (min, max) => {
         }
     }
     return newEmpid;
+
+}
+
+const verifySocial = (ssn) => {
+
+    // Grabs all rows
+    var tableBody = document.getElementById('empTable').rows;
+    var arraySocial = [];
+    // Adding current employee SSNs to array to check against
+    for(let cell of tableBody) {
+        arraySocial.push(cell.children[6].innerText);
+        }
+
+    // Checking new employee ID against current employees
+    for(i = 0; i < arraySocial.length; i++) {
+
+        while(ssn == parseInt(arraySocial[i])) {
+            console.log('twilight zone')
+            ssn = prompt('That SSN already exists! Please contact your local SSN office! Enter another SSN: ');
+        }
+    }
+    if(ssn.length > 9) {
+        ssn = ssn.slice(0, 9);
+    }
+    return ssn;
 
 }
 
