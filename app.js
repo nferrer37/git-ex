@@ -22,7 +22,7 @@ window.onload = () => clearForm();
 
 let currentRow = null;
 
-// Reads selected file into client interface
+// *FUNCTIONALITY* Reads selected file into client interface
 function processFile() {
 
     //get file
@@ -45,7 +45,7 @@ function processFile() {
     
 }
 
-// If the read file is a .CSV file
+// *FUNCTIONALITY* If the read file is a .CSV file
 const readCsv = (readFile) => {
     //check if browser support FileReader
     if (typeof (FileReader) != "undefined") {
@@ -116,11 +116,11 @@ const readCsv = (readFile) => {
          
          else 
          {
-               alert("This browser does not support HTML5.");
+            alert("This browser does not support HTML5.");
          }
 }
 
-// If the read file is a .txt file
+// *FUNCTIONALITY* If the read file is a .txt file
 const readText = (readFile) => {
     //check if browser support FileReader
     if (typeof (FileReader) != "undefined") {
@@ -194,89 +194,90 @@ const readText = (readFile) => {
          }
 }
 
+// *FUNCTIONALITY* Creating new employee
 const addEmployee = () => {
 
     // If the whole form is not empty and the create button is clicked
-    // if(!emptyFormEntry(document.forms['empInfo']['fname'].value) && !emptyFormEntry(document.forms['empInfo']['lname'].value) && !emptyFormEntry(document.forms['empInfo']['address1'].value) && !emptyFormEntry(document.forms['empInfo']['address2'].value) && !emptyFormEntry(document.forms['empInfo']['address3'].value) && !emptyFormEntry(document.forms['empInfo']['address4'].value) && !emptyFormEntry(document.forms['empInfo']['phoneZip'].value) && !emptyFormEntry(document.forms['empInfo']['phoneThree'].value) && !emptyFormEntry(document.forms['empInfo']['phoneFour'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateMonth'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateDay'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateYear'].value) && !emptyFormEntry(document.forms['empInfo']['social'].value)) {
+    if(!emptyFormEntry(document.forms['empInfo']['fname'].value) && !emptyFormEntry(document.forms['empInfo']['lname'].value) && !emptyFormEntry(document.forms['empInfo']['address1'].value) && !emptyFormEntry(document.forms['empInfo']['address2'].value) && !emptyFormEntry(document.forms['empInfo']['address3'].value) && !emptyFormEntry(document.forms['empInfo']['address4'].value) && !emptyFormEntry(document.forms['empInfo']['phoneZip'].value) && !emptyFormEntry(document.forms['empInfo']['phoneThree'].value) && !emptyFormEntry(document.forms['empInfo']['phoneFour'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateMonth'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateDay'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateYear'].value) && !emptyFormEntry(document.forms['empInfo']['social'].value)) {
         
-    //     // Finds the form user inputs
-    //     let firstName = document.forms['empInfo']['fname'].value.charAt(0).toUpperCase() + document.forms['empInfo']['fname'].value.slice(1).toLowerCase();
-    //     while(!textCheck(firstName)) {
-    //         firstName = prompt("First name not in correct format. Please enter only letter characters and try again:")
-    //         firstName = firstName[0].toUpperCase() + firstName.slice(1).toLowerCase();
-    //     }
+        // Finds the form user inputs
+        let firstName = document.forms['empInfo']['fname'].value.charAt(0).toUpperCase() + document.forms['empInfo']['fname'].value.slice(1).toLowerCase();
+        while(!textCheck(firstName)) {
+            firstName = prompt("First name not in correct format. Please enter only letter characters and try again:")
+            firstName = firstName[0].toUpperCase() + firstName.slice(1).toLowerCase();
+        }
 
-    //     let lastName = document.forms['empInfo']['lname'].value.toUpperCase();
-    //     while(!textCheck(lastName)) {
-    //         lastName = prompt("First name not in correct format. Please enter only letter characters and try again:");
-    //         lastName = lastName.toUpperCase();
-    //     }
+        let lastName = document.forms['empInfo']['lname'].value.toUpperCase();
+        while(!textCheck(lastName)) {
+            lastName = prompt("First name not in correct format. Please enter only letter characters and try again:");
+            lastName = lastName.toUpperCase();
+        }
         
-    //     // Sets variables for four parts of address
-    //     var addressStreet = document.forms['empInfo']['address1'].value;
+        // Sets variables for four parts of address
+        var addressStreet = document.forms['empInfo']['address1'].value;
 
-    //     // Street is not in proper format
-    //     while(!streetCheck(addressStreet)) {
-    //         addressStreet = prompt("Street portion of address is not in correct format. Please reenter using example format: ")
-    //         // Splits street into array for validation
-    //         var splitAddress = addressStreet.split(' ');
-    //             addressStreet = validateStreet(splitAddress);
+        // Street is not in proper format
+        while(!streetCheck(addressStreet)) {
+            addressStreet = prompt("Street portion of address is not in correct format. Please reenter using example format: ")
+            // Splits street into array for validation
+            var splitAddress = addressStreet.split(' ');
+                addressStreet = validateStreet(splitAddress);
            
-    //     }
+        }
 
-    //     var addressCity = document.forms['empInfo']['address2'].value.charAt(0).toUpperCase() + document.forms['empInfo']['address2'].value.slice(1).toLowerCase();;
-    //     while(!textCheck(addressCity)) {
-    //         addressCity = prompt("City name format is incorrect. Please enter correct city name and try again: ")
-    //         addressCity = addressCity[0].toUpperCase() + addressCity.slice(1).toLowerCase();
-    //     }
+        var addressCity = document.forms['empInfo']['address2'].value.charAt(0).toUpperCase() + document.forms['empInfo']['address2'].value.slice(1).toLowerCase();;
+        while(!textCheck(addressCity)) {
+            addressCity = prompt("City name format is incorrect. Please enter correct city name and try again: ")
+            addressCity = addressCity[0].toUpperCase() + addressCity.slice(1).toLowerCase();
+        }
         
-    //     var addressState = document.forms['empInfo']['address3'].value.toUpperCase();
-    //     while(!textCheck(addressState)) {
-    //         addressState = prompt("State abbreviation format is incorrect. Please enter correct city name and try again: ").toUpperCase()
-    //     }
-    //     if(addressState.length > 2) {
-    //             addressState = addressState.slice(0, 2);
-    //         }
+        var addressState = document.forms['empInfo']['address3'].value.toUpperCase();
+        while(!textCheck(addressState)) {
+            addressState = prompt("State abbreviation format is incorrect. Please enter correct city name and try again: ").toUpperCase()
+        }
+        if(addressState.length > 2) {
+                addressState = addressState.slice(0, 2);
+            }
         
-    //     var addressZip = document.forms['empInfo']['address4'].value;
-    //     while(!fiveNumberCheck(addressZip) || !numberValidation(addressZip)) {
-    //         addressZip = prompt("Zip code was invalid. Please enter a valid five digit number: ")
-    //     }
-    //     if(addressZip.length > 5) {
-    //             addressZip = addressZip.slice(0, 5);
-    //     }
+        var addressZip = document.forms['empInfo']['address4'].value;
+        while(!fiveNumberCheck(addressZip) || !numberValidation(addressZip)) {
+            addressZip = prompt("Zip code was invalid. Please enter a valid five digit number: ")
+        }
+        if(addressZip.length > 5) {
+                addressZip = addressZip.slice(0, 5);
+        }
 
-    //     // Sets variables for three parts of phone number
-    //     var phoneZip = document.forms['empInfo']['phoneZip'].value;
+        // Sets variables for three parts of phone number
+        var phoneArea = document.forms['empInfo']['phoneArea'].value;
     
-    //     // If number does not match 3 digits or is not a number
-    //     while(!threeNumberCheck(phoneZip) || !numberValidation(phoneZip)) {
-    //         phoneZip = prompt("User input was invalid. Please enter a valid three digit number: ")
-    //     }
-    //     if(phoneZip.length > 3) {
-    //         phoneZip = phoneZip.slice(0, 3);
-    //     }
+        // If number does not match 3 digits or is not a number
+        while(!threeNumberCheck(phoneArea) || !numberValidation(phoneArea)) {
+            phoneArea = prompt("User input was invalid. Please enter a valid three digit number: ")
+        }
+        if(phoneArea.length > 3) {
+            phoneArea = phoneArea.slice(0, 3);
+        }
 
-    //     var phoneThree = document.forms['empInfo']['phoneThree'].value;
-    //     while(!threeNumberCheck(phoneThree) || !numberValidation(phoneThree)) {
-    //         phoneThree = prompt("User input was invalid. Please enter a valid three digit number: ")
-    //     }
-    //     if(phoneThree.length > 3) {
-    //         phoneThree = phoneThree.slice(0, 3);
-    //     }
+        var phoneThree = document.forms['empInfo']['phoneThree'].value;
+        while(!threeNumberCheck(phoneThree) || !numberValidation(phoneThree)) {
+            phoneThree = prompt("User input was invalid. Please enter a valid three digit number: ")
+        }
+        if(phoneThree.length > 3) {
+            phoneThree = phoneThree.slice(0, 3);
+        }
 
-    //     var phoneFour = document.forms['empInfo']['phoneFour'].value;
-    //     while(!fourNumberCheck(phoneFour) || !numberValidation(phoneFour)) {
-    //         phoneFour = prompt("User input was invalid. Please enter a valid four digit number: ")
-    //     }
-    //     if(phoneFour.length > 4) {
-    //         phoneFour = phoneFour.slice(0, 4);
-    //     }
+        var phoneFour = document.forms['empInfo']['phoneFour'].value;
+        while(!fourNumberCheck(phoneFour) || !numberValidation(phoneFour)) {
+            phoneFour = prompt("User input was invalid. Please enter a valid four digit number: ")
+        }
+        if(phoneFour.length > 4) {
+            phoneFour = phoneFour.slice(0, 4);
+        }
         
-    //     // Sets variables for three parts of birthdate
-    //     var birthDateMonth = checkMonth(document.forms['empInfo']['birthDateMonth'].value);
-    //     var birthDateDay = checkDay(document.forms['empInfo']['birthDateDay'].value);
-    //     var birthDateYear = document.forms['empInfo']['birthDateYear'].value;
+        // Sets variables for three parts of birthdate
+        var birthDateMonth = checkMonth(document.forms['empInfo']['birthDateMonth'].value);
+        var birthDateDay = checkDay(document.forms['empInfo']['birthDateDay'].value);
+        var birthDateYear = document.forms['empInfo']['birthDateYear'].value;
 
         let social = document.forms['empInfo']['social'].value;
         while(!socialCheck(social) || !numberValidation(social)) {
@@ -285,81 +286,84 @@ const addEmployee = () => {
                 social = social.slice(0, 9);
             }
         }
+        // Checking existing ssns
         social = verifySocial(social);
 
         // Generates random ID number for new employees
-    //     let empId = randomEmpId(1, 99999);
-    //     let address = addressStreet + ", " + addressCity + ", " + addressState + " " + addressZip
-    //     let phone = "(" + phoneZip + ") " + phoneThree + "-" + phoneFour;
-    //     let birthDate = birthDateMonth + "/" + birthDateDay + "/" + birthDateYear;     
+        let empId = randomEmpId(1, 99999);
+        let address = addressStreet + ", " + addressCity + ", " + addressState + " " + addressZip
+        let phone = "(" + phoneArea + ") " + phoneThree + "-" + phoneFour;
+        // Checking existing phone numbers
+        phone = verifyPhone(phone);
+        let birthDate = birthDateMonth + "/" + birthDateDay + "/" + birthDateYear;     
 
-    //     // Finds table element
-    //     let thisTable = document.getElementById('empTable')
-    //     // Inserts new row into table at end of table
-    //     var row = thisTable.insertRow(-1);
+        // Finds table element
+        let thisTable = document.getElementById('empTable')
+        // Inserts new row into table at end of table
+        var row = thisTable.insertRow(-1);
 
-    //     // New row is given cells for each heading
-    //     var cellEmpid = row.insertCell(0);
-    //     var cellLname = row.insertCell(1);
-    //     var cellFname = row.insertCell(2);
-    //     var cellBirthdate = row.insertCell(3);
-    //     var cellNumber = row.insertCell(4);
-    //     var cellAddress = row.insertCell(5);
-    //     var cellSocial = row.insertCell(6);
-    //     var cellAction = row.insertCell(7);
+        // New row is given cells for each heading
+        var cellEmpid = row.insertCell(0);
+        var cellLname = row.insertCell(1);
+        var cellFname = row.insertCell(2);
+        var cellBirthdate = row.insertCell(3);
+        var cellNumber = row.insertCell(4);
+        var cellAddress = row.insertCell(5);
+        var cellSocial = row.insertCell(6);
+        var cellAction = row.insertCell(7);
 
-    //     // Assigning values for each cell
-    //     cellFname.innerHTML = firstName;
-    //     cellLname.innerHTML = lastName;
-    //     cellEmpid.innerHTML = empId;
-    //     cellAddress.innerHTML = address;
-    //     cellNumber.innerHTML = phone;
-    //     cellBirthdate.innerHTML = birthDate;
-    //     cellSocial.innerHTML = social;
-    //     cellAction.innerHTML = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
+        // Assigning values for each cell
+        cellFname.innerHTML = firstName;
+        cellLname.innerHTML = lastName;
+        cellEmpid.innerHTML = empId;
+        cellAddress.innerHTML = address;
+        cellNumber.innerHTML = phone;
+        cellBirthdate.innerHTML = birthDate;
+        cellSocial.innerHTML = social;
+        cellAction.innerHTML = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
 
-    //     clearForm();
-    // }
+        clearForm();
+    }
     
     
 }
 
-// Checking three digit area code and digits of phone number
+// *DATA VALIDATION* Checking three digit area code and digits of phone number
 const threeNumberCheck = (numberCheck) => {
     const regex = /(\d{3})/
     var result = regex.test(numberCheck)
     return result;
 }
 
-// Checking last four digits of phone number
+// *DATA VALIDATION* Checking last four digits of phone number
 const fourNumberCheck = (numberCheck) => {
     const regex = /(\d{4})/
     var result = regex.test(numberCheck)
     return result;
 }
 
-// Checking five digits of address zip code
+// *DATA VALIDATION* Checking five digits of address zip code
 const fiveNumberCheck = (numberCheck) => {
     const regex = /(\d{5})/
     var result = regex.test(numberCheck)
     return result;
 }
 
-// Checking nine digits of ssn
+// *DATA VALIDATION* Checking nine digits of ssn
 const socialCheck = (social) => {
     const regex = /(\d{9})/
     var result = regex.test(social)
     return result;
 }
 
-// Checking street address format of 'address number/street name/street suffix'
+// *DATA VALIDATION* Checking street address format of 'address number/street name/street suffix'
 const streetCheck = (street) => {
     const regex = /(\d+) (\w+[ ,\w]+)/
     var result = regex.test(street)
     return result;
 }
 
-// When streetCheck function returns false
+// *DATA VALIDATION* When streetCheck function returns false
 const validateStreet = (splitStreet) => {
 
         var validatedStreet = "";
@@ -387,13 +391,13 @@ const validateStreet = (splitStreet) => {
     return validatedStreet;
 }
 
-// Verifies user input has letter characters only
+// *DATA VALIDATION* Verifies user input has letter characters only
 const textCheck = (text) => {
     const regex = /[a-zA-Z]+/
     var result = regex.test(text)
     return result;
 }
-// Called when we click on the submit button
+// *DATA VALIDATION* Called when we click on the submit button
 function numberValidation(inputField) {
 
     var result = true;
@@ -408,7 +412,7 @@ function numberValidation(inputField) {
     return result
 }
 
-// Checks for empty imput values via formBox
+// *DATA VALIDATION* Checks for empty imput values via formBox
 const emptyFormEntry = (formBox) => {
     var validInput = true
     if(formBox == "") {
@@ -420,6 +424,7 @@ const emptyFormEntry = (formBox) => {
     return validInput;
 }
 
+// *FUNCTIONALITY* Editing selected employee
 const editRow = (x) => {
 
     // Disables 'Create'/'Edit' buttons and enables 'Update' button
@@ -464,7 +469,7 @@ const editRow = (x) => {
     var phoneArray = phone.split('-')
     var phoneDigitArray = phoneArray[0].split(' ');
     // Gets phone zip code from slicing off parenthesis from index 0 of phoneDigitArray
-    var phoneZip = phoneDigitArray[0].slice(1, 4);
+    var phoneArea = phoneDigitArray[0].slice(1, 4);
     // Gets last four digits of phone number
     var phoneFour = phoneArray[1];
     // Gets middle three digits of phone number
@@ -488,7 +493,7 @@ const editRow = (x) => {
     document.forms['empInfo']['birthDateDay'].value = birthArray[1];
     document.forms['empInfo']['birthDateYear'].value = birthArray[2];
 
-    document.forms['empInfo']['phoneZip'].value = phoneZip;
+    document.forms['empInfo']['phoneArea'].value = phoneArea;
     document.forms['empInfo']['phoneThree'].value = phoneThree;
     document.forms['empInfo']['phoneFour'].value = phoneFour;
 
@@ -562,11 +567,13 @@ const editRow = (x) => {
     document.forms['empInfo']['social'].value = social;
     // Email is firstInitial.Lastname@email.com
     document.forms['empInfo']['email'].value = firstName[0].toLowerCase() + "." + lastName.toLowerCase() + "@email.com";
+    validateEmail(firstName[0], lastName)
     
     // Sends current row and current row in array format to displayEmployee function
     displayEmployee(rowArray, currentRow);
 }
 
+// *FUNCTIONALITY* Saving changes for edited employee
 const updateRow = () => {
     
     // Reenables ssn input box for new employees
@@ -576,7 +583,7 @@ const updateRow = () => {
     document.getElementById('create').disabled = false;
 
     // Sets variables for three parts of phone number
-    var phoneZip = document.forms['empInfo']['phoneZip'].value;
+    var phoneArea = document.forms['empInfo']['phoneArea'].value;
     var phoneThree = document.forms['empInfo']['phoneThree'].value;
     var phoneFour = document.forms['empInfo']['phoneFour'].value;
 
@@ -599,7 +606,7 @@ const updateRow = () => {
             cell.children[1].innerHTML = document.forms['empInfo']['lname'].value;
             cell.children[2].innerHTML = document.forms['empInfo']['fname'].value;
             cell.children[3].innerHTML = birthDateMonth + "/" + birthDateDay + "/" + birthDateYear;
-            cell.children[4].innerHTML = "(" + phoneZip + ") " + phoneThree + "-" + phoneFour;
+            cell.children[4].innerHTML = "(" + phoneArea + ") " + phoneThree + "-" + phoneFour;
             cell.children[5].innerHTML = address1 + ", " + address2 + ", " + address3 + " " + address4;
             cell.children[6].innerHTML = document.forms['empInfo']['social'].value;
 
@@ -623,7 +630,7 @@ const updateRow = () => {
     clearForm();
 }
 
-// Deletes clicked row
+// *FUNCTIONALITY* Deletes clicked row
 const deleteRow = (x) => {
     var deletedRowIndex = x.parentNode.parentNode.rowIndex;
     var deletedRow = document.getElementById('empTable');
@@ -633,7 +640,7 @@ const deleteRow = (x) => {
 }
 
 
-
+// *FUNCTIONALITY*
 const resetButtons = () => {
     document.getElementById('create').disabled = false;
     document.getElementById('resetButton').disabled = true;
@@ -651,7 +658,7 @@ const resetButtons = () => {
     }
 }
 
-// // Passed row array argument from editRow() function
+// *FUNCTIONALITY* Passed row array argument from editRow() function
 const displayEmployee = (row, thisRow) => {
 
     if(row[0] == document.forms['empInfo']['empId'].value) {
@@ -660,7 +667,7 @@ const displayEmployee = (row, thisRow) => {
 
 }
 
-// Checks month digit of birthdate
+// *DATA VALIDATION* Checks month digit of birthdate
 const checkMonth = (month) => {
 
     var correctMonth = month;
@@ -697,7 +704,7 @@ const checkMonth = (month) => {
     return correctMonth;
 }
 
-// Checks day digit of birthdate
+// *DATA VALIDATION* Checks day digit of birthdate
 const checkDay = (day) => {
 
     var correctDay = day;
@@ -766,7 +773,7 @@ const checkDay = (day) => {
 
 }
 
-// program to check leap year
+// *DATA VALIDATION* program to check leap year
 const checkLeapYear = (year) => {
     var checkLeap = true
     //three conditions to find out the leap year
@@ -779,14 +786,14 @@ const checkLeapYear = (year) => {
     return checkLeap;
 }
 
-// Checks if form values are empty
+//  *DATA VALIDATION* Checks if form values are empty
 const checkEmptyForm = () => {
 
     // If form is empty/new, return true
     if(document.forms['empInfo']['empId'].value == "" &&
     document.forms['empInfo']['lname'].value == "" &&
     document.forms['empInfo']['fname'].value == "" &&
-    document.forms['empInfo']['phoneZip'].value == "" &&
+    document.forms['empInfo']['phoneArea'].value == "" &&
     document.forms['empInfo']['phoneThree'].value == "" &&
     document.forms['empInfo']['phoneFour'].value == "" &&
     document.forms['empInfo']['address1'].value == "" &&
@@ -805,12 +812,12 @@ const checkEmptyForm = () => {
 
 }
 
-// Enables reset button if any form input is clicked on
+// *FUNCTIONALITY* Enables reset button if any form input is clicked on
 const enableReset = () => {
     document.getElementById('resetButton').disabled = false;
 }
 
-// Disables reset button based on certain factors
+// *FUNCTIONALITY* Disables reset button based on certain factors
 const disableReset = () => {
     // If form is empty, disable reset button
     if(checkEmptyForm()) {
@@ -823,6 +830,7 @@ const disableReset = () => {
     
 }
 
+// *FUNCTIONALITY* function for new employee's ID number
 const randomEmpId = (min, max) => {
 
     // New employee ID randomized
@@ -847,6 +855,7 @@ const randomEmpId = (min, max) => {
 
 }
 
+// *DATA VALIDATION*
 const verifySocial = (ssn) => {
 
     // Grabs all rows
@@ -857,11 +866,11 @@ const verifySocial = (ssn) => {
         arraySocial.push(cell.children[6].innerText);
         }
 
-    // Checking new employee ID against current employees
+    // Checking new employee ssn against current employees ssns
     for(i = 0; i < arraySocial.length; i++) {
 
         while(ssn == parseInt(arraySocial[i])) {
-            console.log('twilight zone')
+            console.log('twilight zone');
             ssn = prompt('That SSN already exists! Please contact your local SSN office! Enter another SSN: ');
         }
     }
@@ -872,7 +881,68 @@ const verifySocial = (ssn) => {
 
 }
 
-// Searching/filtering for employees by ID number
+// *DATA VALIDATION*
+const verifyPhone = (phoneNumber) => {
+
+    // Grabs all rows
+    var tableBody = document.getElementById('empTable').rows;
+    var arrayPhone = [];
+    // Adding current employee SSNs to array to check against
+    for(let cell of tableBody) {
+        arrayPhone.push(cell.children[4].innerText);
+        }
+
+    // Checking phone numbers against current employees phone numbers
+    for(i = 0; i < arrayPhone.length; i++) {
+
+        while(phoneNumber == arrayPhone[i]) {
+            console.log('twilight zone')
+
+            alert('That phone number already exists! Enter another phone number');
+
+            var phoneArea = prompt('Enter a three digit number for the phone area code: ').slice(0, 3);
+            document.forms['empInfo']['phoneArea'].value = phoneArea
+            var phoneThree = prompt('Enter a three digit number for the next three digits: ').slice(0, 3);
+            document.forms['empInfo']['phoneThree'].value = phoneThree
+            var phoneFour = prompt('Enter a four digit number for the last four digits: ').slice(0, 4);
+            document.forms['empInfo']['phoneFour'].value = phoneFour
+            
+            phoneNumber = "(" + phoneArea + ") " + phoneThree + "-" + phoneFour;
+            console.log(phoneNumber)
+        }
+    }
+
+    return phoneNumber;
+
+}
+
+// *DATA VALIDATION* WORK ON THIS *************************
+const validateEmail = (firstInitial, lastName) => {
+
+    var checkName = firstInitial.toLowerCase() + "." + lastName.toLowerCase();
+    // Grabs all rows
+    var tableBody = document.getElementById('empTable').rows;
+    var arrayNames = [];
+    // Adding current employee SSNs to array to check against
+    for(let cell of tableBody) {
+        arrayNames.push(cell.children[2].innerText[0].toLowerCase() + "." + cell.children[1].innerText.toLowerCase());
+        }
+        console.log(arrayNames)
+
+    // Checking new employee ID against current employees
+    for(i = 0; i < arrayNames.length; i++) {
+
+        if(checkName == arrayNames[i]) {
+            console.log('twilight zone')
+
+        }
+    }
+
+    // return phoneNumber;
+
+}
+
+// *FUNCTIONALITY* Searching/filtering for employees by ID number
 const searchEmp = () => {
     var input, filter, tbody, tr, a, i, txtValue;
     input = document.getElementById('empSearch');
@@ -904,7 +974,7 @@ const searchEmp = () => {
     }
 }
 
-// Writes rows of table data to test.txt. Will overwrite previously written data
+// *FUNCTIONALITY* Writes rows of table data to test.txt. Will overwrite previously written data
 const fetchData = () => {
 
     var tableRow = document.getElementById('empTable').rows;
