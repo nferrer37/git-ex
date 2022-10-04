@@ -572,7 +572,12 @@ const editRow = (x) => {
     console.log(names)
 
     // Email is firstInitial.Lastname@email.com
+<<<<<<< HEAD
     document.forms['empInfo']['email'].value = names[selectedRow-1] + "@email.com";
+=======
+    document.forms['empInfo']['email'].value = firstName[0].toLowerCase() + "." + lastName.toLowerCase() + "@email.com";
+    validateEmail(firstName[0], lastName)
+>>>>>>> dd2bbb50b7f7d34f7e8def035f055509ba76ee5e
     
     // Sends current row and current row in array format to displayEmployee function
     displayEmployee(rowArray, currentRow);
@@ -921,6 +926,7 @@ const verifyPhone = (phoneNumber) => {
 
 }
 
+<<<<<<< HEAD
 const emailNames = () => {
 
     // Grabs all rows
@@ -964,6 +970,32 @@ const validateEmail = (names) => {
  
     // Return the modified array
     return names;
+=======
+// *DATA VALIDATION* WORK ON THIS *************************
+const validateEmail = (firstInitial, lastName) => {
+
+    var checkName = firstInitial.toLowerCase() + "." + lastName.toLowerCase();
+    // Grabs all rows
+    var tableBody = document.getElementById('empTable').rows;
+    var arrayNames = [];
+    // Adding current employee SSNs to array to check against
+    for(let cell of tableBody) {
+        arrayNames.push(cell.children[2].innerText[0].toLowerCase() + "." + cell.children[1].innerText.toLowerCase());
+        }
+        console.log(arrayNames)
+
+    // Checking new employee ID against current employees
+    for(i = 0; i < arrayNames.length; i++) {
+
+        if(checkName == arrayNames[i]) {
+            console.log('twilight zone')
+
+        }
+    }
+
+    // return phoneNumber;
+
+>>>>>>> dd2bbb50b7f7d34f7e8def035f055509ba76ee5e
 }
 
 // *FUNCTIONALITY* Searching/filtering for employees by ID number
