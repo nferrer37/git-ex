@@ -198,7 +198,7 @@ const readText = (readFile) => {
 const addEmployee = () => {
 
     // If the whole form is not empty and the create button is clicked
-    if(!emptyFormEntry(document.forms['empInfo']['fname'].value) && !emptyFormEntry(document.forms['empInfo']['lname'].value) && !emptyFormEntry(document.forms['empInfo']['address1'].value) && !emptyFormEntry(document.forms['empInfo']['address2'].value) && !emptyFormEntry(document.forms['empInfo']['address3'].value) && !emptyFormEntry(document.forms['empInfo']['address4'].value) && !emptyFormEntry(document.forms['empInfo']['phoneZip'].value) && !emptyFormEntry(document.forms['empInfo']['phoneThree'].value) && !emptyFormEntry(document.forms['empInfo']['phoneFour'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateMonth'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateDay'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateYear'].value) && !emptyFormEntry(document.forms['empInfo']['social'].value)) {
+    if(!emptyFormEntry(document.forms['empInfo']['fname'].value) && !emptyFormEntry(document.forms['empInfo']['lname'].value) && !emptyFormEntry(document.forms['empInfo']['address1'].value) && !emptyFormEntry(document.forms['empInfo']['address2'].value) && !emptyFormEntry(document.forms['empInfo']['address3'].value) && !emptyFormEntry(document.forms['empInfo']['address4'].value) && !emptyFormEntry(document.forms['empInfo']['phoneArea'].value) && !emptyFormEntry(document.forms['empInfo']['phoneThree'].value) && !emptyFormEntry(document.forms['empInfo']['phoneFour'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateMonth'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateDay'].value) && !emptyFormEntry(document.forms['empInfo']['birthDateYear'].value) && !emptyFormEntry(document.forms['empInfo']['social'].value)) {
         
         // Finds the form user inputs
         let firstName = document.forms['empInfo']['fname'].value.charAt(0).toUpperCase() + document.forms['empInfo']['fname'].value.slice(1).toLowerCase();
@@ -219,11 +219,11 @@ const addEmployee = () => {
         // Street is not in proper format
         while(!streetCheck(addressStreet)) {
             addressStreet = prompt("Street portion of address is not in correct format. Please reenter using example format: ")
-            // Splits street into array for validation
-            var splitAddress = addressStreet.split(' ');
-                addressStreet = validateStreet(splitAddress);
-           
+            
         }
+        // Splits street into array for validation
+        var splitAddress = addressStreet.split(' ');
+        addressStreet = validateStreet(splitAddress);
 
         var addressCity = document.forms['empInfo']['address2'].value.charAt(0).toUpperCase() + document.forms['empInfo']['address2'].value.slice(1).toLowerCase();;
         while(!textCheck(addressCity)) {
@@ -366,6 +366,7 @@ const streetCheck = (street) => {
 // *DATA VALIDATION* When streetCheck function returns false
 const validateStreet = (splitStreet) => {
 
+        console.log(splitStreet);
         var validatedStreet = "";
      // For each index of split address array
      for(i = 0; i < splitStreet.length; i++) {
@@ -380,10 +381,21 @@ const validateStreet = (splitStreet) => {
             console.log(validatedStreet)
 
         }
-        // Street suffix
+        // Street suffix ***FIX THIS****
         else if(i = splitStreet.length - 1) {
-            validatedStreet += splitStreet[i].charAt(0).toUpperCase() + splitStreet[i].charAt(1);
+
+            while(splitStreet[i].length < 2) {
+                splitStreet[i] = prompt("Street Suffix did not contain enough characters. Please enter a proper street suffix: ")
+            }
+            if(splitStreet[i].length == 2) {
+                validatedStreet += splitStreet[i].charAt(0).toUpperCase() + splitStreet[i].charAt(1).toLowerCase();
+                console.log(validatedStreet)
+
+            }
+            else if(splitStreet[i].length >= 3 && splitStreet[i].length <= 5) {
+                validatedStreet += splitStreet[i].charAt(0).toUpperCase() + splitStreet[i].slice(1, splitStreet[i].length).toLowerCase();
             console.log(validatedStreet)
+            }          
 
         }
 
