@@ -34,10 +34,14 @@ function processFile() {
     //check if file is CSV or .Txt
     if (fileType == 'csv') {
         readCsv(file);
+        document.getElementById('fetch').disabled = false;
+
     }
     else if(fileType == 'txt')
     {
         readText(file);
+        document.getElementById('fetch').disabled = false;
+
     }
     else {
         alert("This is not an authorized file type. Please try a CSV or .Txt file!")
@@ -57,6 +61,13 @@ const readCsv = (readFile) => {
          // call filereader. onload function
          reader.onload = function(e) {
              var content = reader.result;
+             console.log(content)
+
+              // If file does not contain any content
+              if(content.length == 0) {
+                console.log("HI")
+             }
+             else{
              //split csv file using "\n" for new line ( each row)
              var lines = content.split("\n");
  
@@ -104,6 +115,7 @@ const readCsv = (readFile) => {
                  //append table contents
                  myTable.appendChild(row);
              }
+            }
          }
           //call file reader onload
            reader.readAsText(readFile.files[0]);
@@ -113,7 +125,8 @@ const readCsv = (readFile) => {
            document.getElementById('create').disabled = false;
            
          }
-         
+    
+
          else 
          {
             alert("This browser does not support HTML5.");
@@ -132,6 +145,12 @@ const readText = (readFile) => {
          // call filereader. onload function
          reader.onload = function(e) {
             var content = reader.result;
+             
+            // If file does not contain any content
+             if(content.length == 0) {
+                console.log("HI")
+             }
+             else{
             //split csv file using "\n" for new line ( each row)
             var lines = content.split("\n");
 
@@ -177,6 +196,7 @@ const readText = (readFile) => {
                 row.children[7].innerHTML = contentAction;
                 //append table contents
                 myTable.appendChild(row);
+                }
             }
          }
           //call file reader onload
@@ -186,7 +206,7 @@ const readText = (readFile) => {
            document.getElementById('process').disabled = true;
            document.getElementById('create').disabled = false;
          }
-         
+        
          else 
          {
                alert("This browser does not support HTML5.");
@@ -394,7 +414,12 @@ const validateStreet = (splitStreet) => {
             else if(splitStreet[i].length >= 3 && splitStreet[i].length <= 5) {
                 validatedStreet += splitStreet[i].charAt(0).toUpperCase() + splitStreet[i].slice(1, splitStreet[i].length).toLowerCase();
             console.log(validatedStreet)
-            }          
+            }
+            else {
+                while(splitStreet[i].length > 5) {
+                    splitStreet[i] = prompt("Street Suffix contained too many characters. Please enter a proper street suffix: ")
+                }
+            }
 
         }
 
@@ -658,6 +683,8 @@ const deleteRow = (x) => {
         alert("Table does not contain any data! Please add a new employee or load in another file")
         document.getElementById('process').disabled = false;
         document.getElementById('fileSelect').disabled = false;
+        document.getElementById('fetch').disabled = true;
+
     }
 }
 
@@ -666,6 +693,8 @@ const deleteRow = (x) => {
 const resetButtons = () => {
     document.getElementById('create').disabled = false;
     document.getElementById('resetButton').disabled = true;
+    document.getElementById('fetch').disabled = true;
+
     // Reenables all edit buttons
     var editButtons = document.getElementsByClassName('edit');
     for(let button of editButtons)
@@ -938,6 +967,7 @@ const verifyPhone = (phoneNumber) => {
 
 }
 
+// Provides array of names for email validation
 const emailNames = () => {
 
     // Grabs all rows
