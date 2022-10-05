@@ -131,54 +131,53 @@ const readText = (readFile) => {
          var reader = new FileReader();
          // call filereader. onload function
          reader.onload = function(e) {
-             var content = reader.result;
-             //split csv file using "\n" for new line ( each row)
-             var lines = content.split("\n");
- 
-             //loop all rows
-             for (var count = 1; count < lines.length - 1; count++) {
-                 //create a tr element
-                 var row = document.createElement("tr");
-                 //split each row content
-                 var rowContent = lines[count].split("\t");
-                 console.log(rowContent)
-                 var contentId = rowContent[0];
-                 var contentLname = rowContent[1];
-                 var contentFname = rowContent[2];
-                 var contentBdate = rowContent[3];
-                 var contentPhone = rowContent[4];
-                 var contentAddress = rowContent[5]
-                 var contentSocial = rowContent[6];
- 
-                 // Checking array length for different addresses when editing
-                 // console.log(contentAddress.split(',')[0].split(" "))
- 
-                 // Variable for adding edit and delete functionality to each row
-                 var contentAction = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
- 
-             rowArray = [contentId, contentLname, contentFname, contentBdate, contentPhone, contentAddress, contentSocial, "x" /* placeholder for edit/delete buttons*/]
- 
-                 //loop through all columns of a row
-                 for (var i = 0; i < rowArray.length; i++) {
-                    //create td element 
-                     var cellElement = document.createElement("td");
-                     if (count >= 1) {
-                         
-                         cellElement = document.createElement("td");
-                     }
-                     //add a row element as a node for table
-                     var cellContent = document.createTextNode(rowArray[i]);
-                     
-                     cellElement.appendChild(cellContent);
-                     //append row child
-                     row.appendChild(cellElement);
-                     
-                 }
-                 // Adds edit and delete buttons with functionality to each row
-                 row.children[7].innerHTML = contentAction;
-                 //append table contents
-                 myTable.appendChild(row);
-             }
+            var content = reader.result;
+            //split csv file using "\n" for new line ( each row)
+            var lines = content.split("\n");
+
+            //loop all rows
+            for (var count = 1; count < lines.length - 1; count++) {
+                //create a tr element
+                var row = document.createElement("tr");
+                //split each row content
+                var rowContent = lines[count].split("\t");
+                var contentId = rowContent[0];
+                var contentLname = rowContent[1];
+                var contentFname = rowContent[2];
+                var contentBdate = rowContent[3];
+                var contentPhone = rowContent[4];
+                var contentAddress = rowContent[5]
+                var contentSocial = rowContent[6];
+
+                // Checking array length for different addresses when editing
+                // console.log(contentAddress.split(',')[0].split(" "))
+
+                // Variable for adding edit and delete functionality to each row
+                var contentAction = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
+
+            rowArray = [contentId, contentLname, contentFname, contentBdate, contentPhone, contentAddress, contentSocial, "x" /* placeholder for edit/delete buttons*/]
+
+                //loop through all columns of a row
+                for (var i = 0; i < rowArray.length; i++) {
+                //create td element 
+                    var cellElement = document.createElement("td");
+                    if (count >= 1) {
+                        
+                        cellElement = document.createElement("td");
+                    }
+                    //add a row element as a node for table
+                    var cellContent = document.createTextNode(rowArray[i]);
+                    
+                    cellElement.appendChild(cellContent);
+                    //append row child
+                    row.appendChild(cellElement);
+                    
+                }
+                // Adds edit and delete buttons with functionality to each row
+                row.children[7].innerHTML = contentAction;
+                //append table contents
+                myTable.appendChild(row);
+            }
          }
           //call file reader onload
            reader.readAsText(readFile.files[0]);
@@ -381,7 +380,7 @@ const validateStreet = (splitStreet) => {
             console.log(validatedStreet)
 
         }
-        // Street suffix ***FIX THIS****
+        // Street suffix
         else if(i = splitStreet.length - 1) {
 
             while(splitStreet[i].length < 2) {
@@ -646,11 +645,20 @@ const updateRow = () => {
 
 // *FUNCTIONALITY* Deletes clicked row
 const deleteRow = (x) => {
+
+    var tableRow = document.getElementById('empTable').rows;
+
     var deletedRowIndex = x.parentNode.parentNode.rowIndex;
     var deletedRow = document.getElementById('empTable');
     deletedRow.deleteRow(deletedRowIndex - 1);
     // employeeCount = document.getElementById('empTable').rows;
     clearForm();
+
+    if(tableRow.length < 1) {
+        alert("Table does not contain any data! Please add a new employee or load in another file")
+        document.getElementById('process').disabled = false;
+        document.getElementById('fileSelect').disabled = false;
+    }
 }
 
 
@@ -1010,7 +1018,15 @@ const searchEmp = () => {
 // *FUNCTIONALITY* Writes rows of table data to test.txt. Will overwrite previously written data
 const fetchData = () => {
 
+
     var tableRow = document.getElementById('empTable').rows;
+
+    if(tableRow.length < 1) {
+        alert("Table does not contain any rows. Please populate table and try again")
+        document.getElementById('process').disabled = false;
+        document.getElementById('fileSelect').disabled = false;
+    }
+    else {
     var finalString = "";
     
     // Adds each row into string variable and adds new line command to break the end of the row
@@ -1034,4 +1050,5 @@ const fetchData = () => {
 .then((res) =>{ console.log("Got it!") })
 .then((res) => { alert('test.txt has been written. Your database file has been saved!')})
 .catch((res) => { console.log("What...why?")} )
+}
 }

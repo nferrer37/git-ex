@@ -55,3 +55,8 @@ server.post('/api', (req, res) => {
 server.listen(port, () => {
     console.log(`server is listening on port ${port}`)
 })
+
+/*  git status
+    git add .
+    git commit -m "COMMENTS"
+    git push origin master */
