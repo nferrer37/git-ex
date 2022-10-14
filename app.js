@@ -1,3 +1,58 @@
+import initializeApp from "/firebase/app";
+import {getFirestore, collection, getDocs} from '/firebase/firestore/lite';
+import { getDatabase, ref, set } from "/firebase/database";
+
+// TODO: Add SDKs for Firebase products that you want to use
+
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+
+// Your web app's Firebase configuration
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDRcoS-P09EX-_CTNYlf5mvfSfVpkKIyzI",
+  authDomain: "company-employee-database.firebaseapp.com",
+  databaseURL: "https://company-employee-database-default-rtdb.firebaseio.com",
+  projectId: "company-employee-database",
+  storageBucket: "company-employee-database.appspot.com",
+  messagingSenderId: "480591196631",
+  appId: "1:480591196631:web:5476f5e61641a0a08a5b92"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Initialize Realtime Database and get a reference to the service
+const database = getDatabase(app);
+
+// Writing data to database
+function writeUserData(empId, lastName, firstName, birthDate, phoneNumber, address, social) {
+
+    set(ref(database, 'employees/' + empId), {
+      username: lastName, firstName,
+      birthday: birthDate,
+      phoneNumber : phoneNumber,
+      address: address,
+      socialSecurityNumber: social
+    })
+    .then(() => {
+        alert('Data saved successfully!')
+      })
+      .catch((error) => {
+        alert('The write failed...')
+      });
+  }
+
+// Get a list of cities from your database
+// async function getCities(db) {
+//     const citiesCol = collection(db, 'cities');
+//     const citySnapshot = await getDocs(citiesCol);
+//     const cityList = citySnapshot.docs.map(doc => doc.data());
+//     return cityList;
+//   }
+  
+
 const clearForm = () => {
     resetButtons();
     document.getElementById('empInfo').reset();
@@ -44,7 +99,12 @@ function processFile() {
 
     }
     else {
-        alert("This is not an authorized file type. Please try a CSV or .Txt file!")
+        if(file.value == "") {
+            alert("No file selected. Please select a file and try again")
+        }
+        else {
+            alert("This is not an authorized file type. Please try a CSV or .Txt file!")
+        }
     }
     
 }
@@ -116,21 +176,24 @@ const readCsv = (readFile) => {
                  myTable.appendChild(row);
              }
             }
-         }
-          //call file reader onload
-           reader.readAsText(readFile.files[0]);
- 
-           document.getElementById('fileSelect').disabled = true;
-           document.getElementById('process').disabled = true;
-           document.getElementById('create').disabled = false;
-           
-         }
-    
+        }
+        if(readFile.files[0].size >= 1) {
+            //call file reader onload
+            reader.readAsText(readFile.files[0]);
 
-         else 
-         {
-            alert("This browser does not support HTML5.");
-         }
+            document.getElementById('fileSelect').disabled = true;
+            document.getElementById('process').disabled = true;
+            document.getElementById('create').disabled = false;
+        }
+        else {
+            alert("File selected does not contain any content. Select another file and try again.")
+        }
+        
+    }
+    else 
+    {
+    alert("This browser does not support HTML5.");
+    }
 }
 
 // *FUNCTIONALITY* If the read file is a .txt file
@@ -199,13 +262,19 @@ const readText = (readFile) => {
                 }
             }
          }
-          //call file reader onload
+         if(readFile.files[0].size >= 1) {
+            //call file reader onload
            reader.readAsText(readFile.files[0]);
  
            document.getElementById('fileSelect').disabled = true;
            document.getElementById('process').disabled = true;
            document.getElementById('create').disabled = false;
          }
+         else {
+            alert("File selected does not contain any content. Select another file and try again.")
+         }
+        }
+          
         
          else 
          {
@@ -342,6 +411,9 @@ const addEmployee = () => {
         cellAction.innerHTML = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
 
         clearForm();
+    }
+    else {
+        alert("Not all form entries were completed! Please ensure all fields are completed and try again!")
     }
     
     
@@ -766,7 +838,7 @@ const checkDay = (day) => {
     // if single digit day
     if(day.length == 1)
     {
-        if(day == 0)
+        while(day == 0)
         {
             alert('Day digit cannot be zero!');
             correctDay = prompt('Enter a correct digit for the day');
@@ -776,24 +848,24 @@ const checkDay = (day) => {
     else if(day.length > 1)
     {
         // Checking if first digit is not 3 or less
-        if(day[0] != 0 && day[0] != 1 && day[0] != 2 && day[0] != 3)
+        while(day[0] != 0 && day[0] != 1 && day[0] != 2 && day[0] != 3)
         {
             alert('If two digit day, first digit must be 1, 2, or 3!');
             correctDay = prompt('Enter a correct digit for the day');
         }
         // Checking if day is greater than 31
-        else if(parseInt(day) > 31)
+        while(parseInt(day) > 31)
         {
             alert('There cannot be more than 31 days in a month!');
             correctDay = prompt('Enter a correct digit for the day');
 
         }
         // If birthdate month has 30 days
-        else if(parseInt(month) == 4 || parseInt(month) == 6 || parseInt(month) == 9 || parseInt(month) == 11)
+        if(parseInt(month) == 4 || parseInt(month) == 6 || parseInt(month) == 9 || parseInt(month) == 11)
         {
-            if(parseInt(day) > 30){
-                  alert('This month cannot have more than 30 days');
-            correctDay = prompt('Enter a correct digit for the day');
+            while(parseInt(day) > 30){
+                alert('This month cannot have more than 30 days');
+                correctDay = prompt('Enter a correct digit for the day');
             }
           
         }
@@ -804,13 +876,25 @@ const checkDay = (day) => {
             {
                 if(parseInt(day) > 29) {
                     alert('This month cannot have more than 29 days');
-            correctDay = prompt('Enter a correct digit for the day');
+                    correctDay = prompt('Enter a correct digit for the day');
+
+                    // Correcting user inputs
+                    while(correctDay > 29) {
+                        alert('This month cannot have more than 29 days');
+                        correctDay = prompt('Enter a correct digit for the day');
+                    }
                 }
             }
             else {
                 if(parseInt(day) > 28) {
                     alert('This month cannot have more than 28 days');
-            correctDay = prompt('Enter a correct digit for the day');
+                    correctDay = prompt('Enter a correct digit for the day');
+
+                    // Correcting user inputs
+                    while(correctDay > 28) {
+                        alert('This month cannot have more than 28 days');
+                        correctDay = prompt('Enter a correct digit for the day');
+                    }
                 }
             }
         }
@@ -1051,6 +1135,8 @@ const fetchData = () => {
 
     var tableRow = document.getElementById('empTable').rows;
 
+    console.log(document.getElementById("fileSelect").value)
+
     if(tableRow.length < 1) {
         alert("Table does not contain any rows. Please populate table and try again")
         document.getElementById('process').disabled = false;
@@ -1058,10 +1144,20 @@ const fetchData = () => {
     }
     else {
     var finalString = "";
+
+    // Gives user one last opportunity to confirm the request they are trying to send
+    var confirmFetch = "Are you sure you wish to send this request?";
+    if (confirm(confirmFetch) == true) {
+    
+  
     
     // Adds each row into string variable and adds new line command to break the end of the row
     for(i = 0; i < tableRow.length; i++) {
         finalString += tableRow[i].innerText + '\n';
+        console.log(tableRow[i])
+
+        // Clears file selector
+        document.getElementById("fileSelect").value = null
     }
     
 
@@ -1076,9 +1172,11 @@ const fetchData = () => {
     
     body: JSON.stringify({name: finalString})
 
+
 })
 .then((res) =>{ console.log("Got it!") })
 .then((res) => { alert('test.txt has been written. Your database file has been saved!')})
 .catch((res) => { console.log("What...why?")} )
+}
 }
 }
