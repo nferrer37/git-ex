@@ -7,7 +7,7 @@
     <title>Company Employee Database</title>
 
     <link rel="stylesheet" href="styles.css">
-    <script src="app.js" type="module"></script>
+    <script src="app.js"></script>
     <!--Favicon-->
     <link rel="shortcut icon" href="#">
 
@@ -166,7 +166,9 @@
             <label for="fileSelect">Select a file:</label>
             <input type="file" name="fileSelect" accept=".csv, text/plain" id="fileSelect"><br><br>
             <button id="process" onclick="processFile()">Process</button>
-            <button id="fetch" onclick="fetchData()">Fetch</button>
+            <button id="write" onclick="writeData()">Write</button>
+            <button id="read" onclick="readDatabase()">Read</button>
+
 
         </div><br>
         
@@ -198,6 +200,7 @@
 
         </tbody>
         
-    </table> 
+    </table>
+    
 </body>
 </html>

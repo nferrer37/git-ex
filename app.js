@@ -1,59 +1,7 @@
-import initializeApp from "/firebase/app";
-import {getFirestore, collection, getDocs} from '/firebase/firestore/lite';
-import { getDatabase, ref, set } from "/firebase/database";
-
-// TODO: Add SDKs for Firebase products that you want to use
-
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-
-// Your web app's Firebase configuration
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDRcoS-P09EX-_CTNYlf5mvfSfVpkKIyzI",
-  authDomain: "company-employee-database.firebaseapp.com",
-  databaseURL: "https://company-employee-database-default-rtdb.firebaseio.com",
-  projectId: "company-employee-database",
-  storageBucket: "company-employee-database.appspot.com",
-  messagingSenderId: "480591196631",
-  appId: "1:480591196631:web:5476f5e61641a0a08a5b92"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// Initialize Realtime Database and get a reference to the service
-const database = getDatabase(app);
-
-// Writing data to database
-function writeUserData(empId, lastName, firstName, birthDate, phoneNumber, address, social) {
-
-    set(ref(database, 'employees/' + empId), {
-      username: lastName, firstName,
-      birthday: birthDate,
-      phoneNumber : phoneNumber,
-      address: address,
-      socialSecurityNumber: social
-    })
-    .then(() => {
-        alert('Data saved successfully!')
-      })
-      .catch((error) => {
-        alert('The write failed...')
-      });
-  }
-
-// Get a list of cities from your database
-// async function getCities(db) {
-//     const citiesCol = collection(db, 'cities');
-//     const citySnapshot = await getDocs(citiesCol);
-//     const cityList = citySnapshot.docs.map(doc => doc.data());
-//     return cityList;
-//   }
-  
-
 const clearForm = () => {
+    let table = document.getElementById('empTable');
+    let rows = table.rows;
+    
     resetButtons();
     document.getElementById('empInfo').reset();
     document.getElementById('update').disabled = true;
@@ -63,7 +11,6 @@ const clearForm = () => {
     if(document.getElementById('process').disabled) {
         document.getElementById('create').disabled = false;
     }
-
 
     var clearRow = document.getElementById('empTable').rows;
 
@@ -76,9 +23,14 @@ const clearForm = () => {
 window.onload = () => clearForm();
 
 let currentRow = null;
+var empNames = new Array();
+
 
 // *FUNCTIONALITY* Reads selected file into client interface
 function processFile() {
+
+    let table = document.getElementById('empTable');
+    let rows = table.rows;
 
     //get file
     var file = document.getElementById("fileSelect");
@@ -88,14 +40,36 @@ function processFile() {
 
     //check if file is CSV or .Txt
     if (fileType == 'csv') {
-        readCsv(file);
-        document.getElementById('fetch').disabled = false;
+
+        if(rows.length < 1) {
+            readCsv(file);
+            document.getElementById('write').disabled = false; 
+        }
+        else {
+            for(var i = 0;i < table.rows.length;) {
+                table.deleteRow(i);
+            }
+            readCsv(file);
+            document.getElementById('write').disabled = false; 
+        }
+        arrayNames(rows)
 
     }
     else if(fileType == 'txt')
     {
-        readText(file);
-        document.getElementById('fetch').disabled = false;
+        if(rows.length < 1) {
+            readText(file);
+            document.getElementById('write').disabled = false;
+        }
+        else {
+            
+            for(var i = 0; i < table.rows.length;) {
+                table.deleteRow(i);
+            }
+            readText(file);
+            document.getElementById('write').disabled = false;
+        }
+     arrayNames(rows)
 
     }
     else {
@@ -109,6 +83,10 @@ function processFile() {
     
 }
 
+const arrayNames = (tableRows) => {
+    console.log(tableRows)
+}
+
 // *FUNCTIONALITY* If the read file is a .CSV file
 const readCsv = (readFile) => {
     //check if browser support FileReader
@@ -120,8 +98,7 @@ const readCsv = (readFile) => {
          var reader = new FileReader();
          // call filereader. onload function
          reader.onload = function(e) {
-             var content = reader.result;
-             console.log(content)
+             var content = reader.result;              
 
               // If file does not contain any content
               if(content.length == 0) {
@@ -673,11 +650,11 @@ const editRow = (x) => {
 
     document.forms['empInfo']['social'].value = social;
 
-    var names = emailNames()
-    names = validateEmail(names)
+    // var names = emailNames()
+    // names = validateEmail(names)
 
     // Email is firstInitial.Lastname@email.com
-    document.forms['empInfo']['email'].value = names[selectedRow-1] + "@email.com";
+    document.forms['empInfo']['email'].value = /*names[selectedRow-1]*/ firstName.charAt().toLowerCase() + "." + lastName.toLowerCase() + "@email.com";
     
     // Sends current row and current row in array format to displayEmployee function
     displayEmployee(rowArray, currentRow);
@@ -755,7 +732,7 @@ const deleteRow = (x) => {
         alert("Table does not contain any data! Please add a new employee or load in another file")
         document.getElementById('process').disabled = false;
         document.getElementById('fileSelect').disabled = false;
-        document.getElementById('fetch').disabled = true;
+        document.getElementById('write').disabled = true;
 
     }
 }
@@ -765,7 +742,7 @@ const deleteRow = (x) => {
 const resetButtons = () => {
     document.getElementById('create').disabled = false;
     document.getElementById('resetButton').disabled = true;
-    document.getElementById('fetch').disabled = true;
+    document.getElementById('write').disabled = true;
 
     // Reenables all edit buttons
     var editButtons = document.getElementsByClassName('edit');
@@ -1052,20 +1029,21 @@ const verifyPhone = (phoneNumber) => {
 }
 
 // Provides array of names for email validation
-const emailNames = () => {
+// const emailNames = () => {
 
-    // Grabs all rows
-    var tableBody = document.getElementById('empTable').rows;
-    var arrayNames = [];
+//     // Grabs all rows
+//     var tableBody = document.getElementById('empTable').rows;
+//     var arrayNames = [];
     
-    // Adding current employee SSNs to array to check against
-    for(let cell of tableBody) {
-        arrayNames.push(cell.children[2].innerText[0].toLowerCase() + "." + cell.children[1].innerText.toLowerCase());
-    }
+//     // Adding current employee SSNs to array to check against
+//     for(let cell of tableBody) {
+//         console.log(cell.children[2])
+//         arrayNames.push(cell.children[2].innerText.toLowerCase() + "." + cell.children[1].innerText.toLowerCase());
+//     }
 
-    return arrayNames;
+//     return arrayNames;
 
-}
+// }
 
 // *DATA VALIDATION* Updates names based on duplicate firstinitial.lastname for email addresses
 const validateEmail = (names) => {
@@ -1129,13 +1107,112 @@ const searchEmp = () => {
     }
 }
 
-// *FUNCTIONALITY* Writes rows of table data to test.txt. Will overwrite previously written data
-const fetchData = () => {
+// *FUNCTIONALITY* Writes rows of table data to database. Will overwrite previously written data
+const writeData = () => {
 
+    var finalString = dataToUse(); 
+
+    fetch("http://localhost:8080/api",
+    {
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+        },
+        method: "POST",
+        
+        body: JSON.stringify({name: finalString})
+
+
+    })
+    .then((res) =>{ console.log("Got it!") })
+    .then((res) => { alert('Table data has been written. Your database file has been saved!')})
+    .catch((res) => { console.log("What...why?")} )
+}
+
+
+// *FUNCTIONALITY* Reads data from database
+const readDatabase = () => {
+    
+    var table = document.getElementById('empTable')
+    var tableRow = table.rows;
+    var confirmFetch = "Are you sure you wish to send this request?";
+
+    if(tableRow.length < 1) {
+        
+        if (confirm(confirmFetch) == true)  {
+            readCall();
+
+        }
+        
+    }
+    else {
+        if (confirm(confirmFetch) == true)  {
+            table.innerHTML = "";
+            readCall();
+        }
+        
+    }
+    document.getElementById('write').disabled = false;
+    document.getElementById('fileSelect').disabled = false;
+    document.getElementById('process').disabled = false;
+
+}
+
+// Database 'read' fetch call
+const readCall = () => {
+
+    fetch("http://localhost:8080/database",
+    {
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+        },
+        method: "POST",
+        
+        // body: JSON.stringify({name: finalString})
+
+
+    })
+    .then((res) =>{ return res.json()})
+    .then(function(json){
+        database_function(json);
+    })
+    .then((res) =>{ alert('Database has been read successfully!') })
+    .catch((res) => { console.log("What...why?")} )
+}
+
+// *FUNCTIONALITY* Takes data from database and stores it in client-side table
+const database_function = (data) => {
+    var databaseData = data.split('?')
+    var capitalFirst = "";
+
+    var table = document.getElementById('empTable') 
+   
+
+    for(i = 0; i < databaseData.length - 1; i++) { 
+        var row = table.insertRow(-1)
+        row.innerHTML = databaseData[i] 
+    }
+    
+    // Capitalize first names
+    for(i = 0; i < table.rows.length; i++) { 
+        capitalFirst = table.rows[i].cells[2].innerText;
+        capitalFirst = capitalFirst.charAt(0).toUpperCase() + capitalFirst.slice(1).toLowerCase()
+        table.rows[i].cells[2].innerText = capitalFirst;
+    }
+
+    document.getElementById('fileSelect').disabled = false;
+    document.getElementById('process').disabled = false; 
+    document.getElementById('write').disabled = false; 
+
+}
+
+// Compiles table data for user to send to database
+const dataToUse = () => {
 
     var tableRow = document.getElementById('empTable').rows;
-
-    console.log(document.getElementById("fileSelect").value)
 
     if(tableRow.length < 1) {
         alert("Table does not contain any rows. Please populate table and try again")
@@ -1143,40 +1220,24 @@ const fetchData = () => {
         document.getElementById('fileSelect').disabled = false;
     }
     else {
-    var finalString = "";
+        var finalString = "";
 
-    // Gives user one last opportunity to confirm the request they are trying to send
-    var confirmFetch = "Are you sure you wish to send this request?";
-    if (confirm(confirmFetch) == true) {
+        // Gives user one last opportunity to confirm the request they are trying to send
+        var confirmFetch = "Are you sure you wish to send this request?";
+        if (confirm(confirmFetch) == true) {
+        
     
-  
-    
-    // Adds each row into string variable and adds new line command to break the end of the row
-    for(i = 0; i < tableRow.length; i++) {
-        finalString += tableRow[i].innerText + '\n';
-        console.log(tableRow[i])
+        
+        // Adds each row into string variable and adds new line command to break the end of the row
+        for(i = 0; i < tableRow.length; i++) {
+            finalString += tableRow[i].innerText + '\n';
+            console.log(tableRow[i])
 
-        // Clears file selector
-        document.getElementById("fileSelect").value = null
+            // Clears file selector
+            document.getElementById("fileSelect").value = null
+        }
+
+        return finalString;
+        }
     }
-    
-
-    fetch("http://localhost:8080/api",
-{
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin':'*'
-    },
-    method: "POST",
-    
-    body: JSON.stringify({name: finalString})
-
-
-})
-.then((res) =>{ console.log("Got it!") })
-.then((res) => { alert('test.txt has been written. Your database file has been saved!')})
-.catch((res) => { console.log("What...why?")} )
-}
-}
 }

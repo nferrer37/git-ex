@@ -4,17 +4,23 @@
   "description": "postgresql",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development nodemon server.js",
+    "start": "GOOGLE_APPLICATION_CREDENTIALS=//home/user/Downloads/service-account-file.json node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nicholas Ferrer",
   "license": "ISC",
   "dependencies": {
+    "core-util-is": "^1.0.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "firebase": "^9.12.1",
+    "firebase-admin": "^11.2.0",
+    "firestore-export-import": "^1.3.4",
     "knex": "^2.3.0",
     "nodemon": "^2.0.19",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "request": "^2.88.2",
+    "webpack-dev-server": "^4.11.1"
   }
 }
