@@ -24,6 +24,8 @@ window.onload = () => clearForm();
 
 let currentRow = null;
 var empNames = new Array();
+var nameChanged = false;
+var currentName = [];
 
 
 // *FUNCTIONALITY* Reads selected file into client interface
@@ -52,7 +54,6 @@ function processFile() {
             readCsv(file);
             document.getElementById('write').disabled = false; 
         }
-        arrayNames(rows)
 
     }
     else if(fileType == 'txt')
@@ -69,7 +70,7 @@ function processFile() {
             readText(file);
             document.getElementById('write').disabled = false;
         }
-     arrayNames(rows)
+     
 
     }
     else {
@@ -81,10 +82,6 @@ function processFile() {
         }
     }
     
-}
-
-const arrayNames = (tableRows) => {
-    console.log(tableRows)
 }
 
 // *FUNCTIONALITY* If the read file is a .CSV file
@@ -129,7 +126,7 @@ const readCsv = (readFile) => {
                  // Variable for adding edit and delete functionality to each row
                  var contentAction = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
  
-             rowArray = [contentId, contentLname, contentFname, contentBdate, contentPhone, contentAddress, contentSocial, "x" /* placeholder for edit/delete buttons*/]
+             rowArray = [contentId, contentLname, contentFname, contentBdate, contentPhone, contentAddress, contentSocial, Date.now(), "x" /* placeholder for edit/delete buttons*/]
  
                  //loop through all columns of a row
                  for (var i = 0; i < rowArray.length; i++) {
@@ -147,8 +144,9 @@ const readCsv = (readFile) => {
                      row.appendChild(cellElement);
                      
                  }
+                 
                  // Adds edit and delete buttons with functionality to each row
-                 row.children[7].innerHTML = contentAction;
+                 row.children[8].innerHTML = contentAction;
                  //append table contents
                  myTable.appendChild(row);
              }
@@ -214,7 +212,7 @@ const readText = (readFile) => {
                 // Variable for adding edit and delete functionality to each row
                 var contentAction = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
 
-            rowArray = [contentId, contentLname, contentFname, contentBdate, contentPhone, contentAddress, contentSocial, "x" /* placeholder for edit/delete buttons*/]
+            rowArray = [contentId, contentLname, contentFname, contentBdate, contentPhone, contentAddress, contentSocial, Date.now(), "x" /* placeholder for edit/delete buttons*/]
 
                 //loop through all columns of a row
                 for (var i = 0; i < rowArray.length; i++) {
@@ -233,7 +231,7 @@ const readText = (readFile) => {
                     
                 }
                 // Adds edit and delete buttons with functionality to each row
-                row.children[7].innerHTML = contentAction;
+                row.children[8].innerHTML = contentAction;
                 //append table contents
                 myTable.appendChild(row);
                 }
@@ -361,6 +359,7 @@ const addEmployee = () => {
         // Checking existing phone numbers
         phone = verifyPhone(phone);
         let birthDate = birthDateMonth + "/" + birthDateDay + "/" + birthDateYear;     
+        let dateAdded = Date.now();
 
         // Finds table element
         let thisTable = document.getElementById('empTable')
@@ -375,7 +374,8 @@ const addEmployee = () => {
         var cellNumber = row.insertCell(4);
         var cellAddress = row.insertCell(5);
         var cellSocial = row.insertCell(6);
-        var cellAction = row.insertCell(7);
+        var cellDate = row.insertCell(7)
+        var cellAction = row.insertCell(8);
 
         // Assigning values for each cell
         cellFname.innerHTML = firstName;
@@ -385,6 +385,7 @@ const addEmployee = () => {
         cellNumber.innerHTML = phone;
         cellBirthdate.innerHTML = birthDate;
         cellSocial.innerHTML = social;
+        cellDate.innerHTML = dateAdded;
         cellAction.innerHTML = "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'></td>";
 
         clearForm();
@@ -542,6 +543,9 @@ const editRow = (x) => {
     let empId = rowArray[0].valueOf();
     let lastName = rowArray[1].valueOf();
     let firstName = rowArray[2].valueOf();
+
+    // For email validation
+    currentName = [firstName, lastName];
     
     let birthDate = rowArray[3].valueOf();
     // Gets birthdate values by splitting column by forward slash
@@ -650,11 +654,11 @@ const editRow = (x) => {
 
     document.forms['empInfo']['social'].value = social;
 
-    // var names = emailNames()
-    // names = validateEmail(names)
+    var names = emailNames() 
+    names = validateEmail(names)
 
     // Email is firstInitial.Lastname@email.com
-    document.forms['empInfo']['email'].value = /*names[selectedRow-1]*/ firstName.charAt().toLowerCase() + "." + lastName.toLowerCase() + "@email.com";
+    document.forms['empInfo']['email'].value = names[selectedRow-1][0] /*firstName.charAt().toLowerCase() + "." + lastName.toLowerCase()*/ + "@email.com";
     
     // Sends current row and current row in array format to displayEmployee function
     displayEmployee(rowArray, currentRow);
@@ -697,6 +701,20 @@ const updateRow = () => {
             cell.children[5].innerHTML = address1 + ", " + address2 + ", " + address3 + " " + address4;
             cell.children[6].innerHTML = document.forms['empInfo']['social'].value;
 
+            var firstName = cell.children[2].innerHTML
+            var lastName = cell.children[1].innerHTML
+            console.log(currentName, firstName, lastName)
+
+            // If employee's name changed
+            if(currentName[0] != firstName || currentName[1] != lastName) {
+                nameChanged = true;
+                cell.children[7].innerHTML = Date.now();
+            }
+            // If an employee's name changed, sort table by oldest employee first
+            if(nameChanged) {
+                sortTable()
+            }
+
             // Resets row color back to black to 'deselect'
             cell.classList.remove("editingRow");
         }
@@ -715,6 +733,43 @@ const updateRow = () => {
     // Disables update button
     document.getElementById('update').disabled = true;
     clearForm();
+}
+
+// Sorts table by ascending dateAdded number
+const sortTable = () => {
+    var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("empTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    console.log(rows)
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[7];
+      y = rows[i + 1].getElementsByTagName("TD")[7];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
 }
 
 // *FUNCTIONALITY* Deletes clicked row
@@ -1029,32 +1084,38 @@ const verifyPhone = (phoneNumber) => {
 }
 
 // Provides array of names for email validation
-// const emailNames = () => {
+const emailNames = () => {
 
-//     // Grabs all rows
-//     var tableBody = document.getElementById('empTable').rows;
-//     var arrayNames = [];
+    // Grabs all rows
+    var tableBody = document.getElementById('empTable').rows;
+
+    if(empNames.length > 0) {
+        empNames = []
+    }
     
-//     // Adding current employee SSNs to array to check against
-//     for(let cell of tableBody) {
-//         console.log(cell.children[2])
-//         arrayNames.push(cell.children[2].innerText.toLowerCase() + "." + cell.children[1].innerText.toLowerCase());
-//     }
+    // Adding current employee SSNs to array to check against
+    for(let cell of tableBody) {
+        empNames.push([cell.children[2].innerText.charAt(0).toLowerCase() + "." + cell.children[1].innerText.toLowerCase(), cell.children[7].innerText]);
+    }
 
-//     return arrayNames;
+    return empNames;
 
-// }
+}
 
 // *DATA VALIDATION* Updates names based on duplicate firstinitial.lastname for email addresses
 const validateEmail = (names) => {
 
     // Store the frequency of strings
     var nameFreq = new Map();
+    // var empArray = []
  
+    names.sort(function(a,b) {
+        return a[1]-b[1]
+    })
     // Iterate over the array
-    for (var i = 0;
-         i < names.length; i++) {
- 
+    for (var i = 0; i < names.length; i+=2) {
+        
+        
         // For the first occurrence,
         // update the frequency count
         if (!nameFreq.has(names[i]))
@@ -1069,11 +1130,14 @@ const validateEmail = (names) => {
             // to end of the string
             names[i] += count.toString();
         }
+
     }
  
     // Return the modified array
     return names;
 }
+
+
 
 // *FUNCTIONALITY* Searching/filtering for employees by ID number
 const searchEmp = () => {

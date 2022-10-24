@@ -92,11 +92,12 @@ server.post('/api', async(req, res) => {
         var phoneNumber = iteratorRow[4];
         var address = iteratorRow[5];
         var social = iteratorRow[6];
+        var empDate = iteratorRow[7];
 
         const data = {
             address: address,
             birthday: birthDate,
-            dateAdded: Timestamp.fromDate(new Date()),
+            dateAdded: Number(empDate), 
             phoneNumber: phoneNumber,
             social: Number(social),
             username: lastName.toLowerCase() + ', ' + firstName.toLowerCase(),
@@ -116,7 +117,7 @@ server.post('/database', async(req, res) => {
     const employRef = fireDatabase.collection("employees")
 
     // Reading current data from database
-    const snapshot = await employRef.get();
+    const snapshot = await employRef.orderBy('dateAdded').get();
     // if(snapshot.exists) {
         var content = '';
         snapshot.forEach(doc => {
@@ -131,6 +132,7 @@ server.post('/database', async(req, res) => {
                 var phoneNumber = doc.data()['phoneNumber'];
                 var address = doc.data()['address']
                 var social = doc.data()['social']
+                var dateAdded = doc.data()['dateAdded']
                 
                 content += '<tr>';
                 content += '<td>' + empId + '</td>'; //column1
@@ -140,7 +142,8 @@ server.post('/database', async(req, res) => {
                 content += '<td>' + phoneNumber + '</td>'; //column5
                 content += '<td>' + address + '</td>'; //column6
                 content += '<td>' + social + '</td>'; //column7
-                content += '<td>' + "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'>" + '</td>'; //column8: edit/delete
+                content += '<td>' + dateAdded + '</td>'; //column8
+                content += '<td>' + "<input type='button' class='edit' id='edit' value='Edit' onclick='editRow(this)'> <input type='button' id='delete' value='Delete' onclick='deleteRow(this)'>" + '</td>'; //column9: edit/delete
 
                 content += '</tr>?';
 
