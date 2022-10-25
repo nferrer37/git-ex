@@ -688,14 +688,15 @@ const updateRow = () => {
     var address2 = document.forms['empInfo']['address2'].value 
     var address3 = document.forms['empInfo']['address3'].value 
     var address4 = document.forms['empInfo']['address4'].value
+    var firstName = document.forms['empInfo']['fname'].value
     // Grabs all rows
     var tableBody = document.getElementById('empTable').rows;
 
     // Goes through each row to determine which row is the current row
     for(let cell of tableBody) {
         if(cell.children[0].innerText == document.forms['empInfo']['empId'].value) {
-            cell.children[1].innerHTML = document.forms['empInfo']['lname'].value;
-            cell.children[2].innerHTML = document.forms['empInfo']['fname'].value;
+            cell.children[1].innerHTML = document.forms['empInfo']['lname'].value.toUpperCase();
+            cell.children[2].innerHTML = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
             cell.children[3].innerHTML = birthDateMonth + "/" + birthDateDay + "/" + birthDateYear;
             cell.children[4].innerHTML = "(" + phoneArea + ") " + phoneThree + "-" + phoneFour;
             cell.children[5].innerHTML = address1 + ", " + address2 + ", " + address3 + " " + address4;
@@ -703,16 +704,13 @@ const updateRow = () => {
 
             var firstName = cell.children[2].innerHTML
             var lastName = cell.children[1].innerHTML
-            console.log(currentName, firstName, lastName)
 
             // If employee's name changed
             if(currentName[0] != firstName || currentName[1] != lastName) {
+  
                 nameChanged = true;
                 cell.children[7].innerHTML = Date.now();
-            }
-            // If an employee's name changed, sort table by oldest employee first
-            if(nameChanged) {
-                sortTable()
+                
             }
 
             // Resets row color back to black to 'deselect'
@@ -720,7 +718,9 @@ const updateRow = () => {
         }
     }
 
-    
+    // Re-sorts table by oldest dateAdded number first
+    sortTable()
+
     // Reenables all edit buttons
     var editButtons = document.getElementsByClassName('edit');
     for(let button of editButtons)
@@ -746,10 +746,10 @@ const sortTable = () => {
     //start by saying: no switching is done:
     switching = false;
     rows = table.rows;
-    console.log(rows)
+
     /*Loop through all table rows (except the
     first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
+    for (i = 0; i < (rows.length - 1); i++) {
       //start by saying there should be no switching:
       shouldSwitch = false;
       /*Get the two elements you want to compare,
@@ -1107,33 +1107,71 @@ const validateEmail = (names) => {
 
     // Store the frequency of strings
     var nameFreq = new Map();
-    // var empArray = []
- 
+    var empArray = []
+    var result = ""
     names.sort(function(a,b) {
         return a[1]-b[1]
     })
-    // Iterate over the array
-    for (var i = 0; i < names.length; i+=2) {
-        
-        
-        // For the first occurrence,
-        // update the frequency count
-        if (!nameFreq.has(names[i]))
-            nameFreq.set(names[i],1);
- 
-        // Otherwise
-        else {
- 
-            var count = nameFreq.get(names[i]);
-            nameFreq.set(names[i],nameFreq.get(names[i])+1);
-            // Append frequency count
-            // to end of the string
-            names[i] += count.toString();
-        }
 
+    // Stores names object as an array of names
+    for (i = 0; i < names.length; i++) {
+    empArray.push(names[i][0])
     }
- 
-    // Return the modified array
+
+    console.log("Array of names: ", empArray)
+
+    // Filters array for only duplicate names
+    result = empArray.filter((element, index) => {
+    return empArray.indexOf(element) !== index;
+    })
+
+    console.log("This is the filtered result: ", result)
+
+    var nameString = "" 
+    var duplicateIndexes = []
+    var emailNumber;
+
+    // If there is at least one duplicate name
+    if(result.length > 0) {
+
+        // For each array value of duplicate names
+        for(a = 0; a < result.length; a++) {
+
+            // For each name in names array
+            for(i = 0; i < empArray.length; i++) {
+
+                nameString = empArray[i]
+
+                // If name at i index in names array is the name from the duplicate array, push the index of that name to index array
+                if(nameString === result[a]) {
+                    console.log(i)
+                    duplicateIndexes.push(i)
+                }
+
+               
+            } 
+            
+            console.log(duplicateIndexes)
+        }
+        // For every index value after the first iteration, duplicate emails have numbers added to end of name
+        for(b = 1; b < duplicateIndexes.length; b++) {
+            var index = duplicateIndexes[b]
+            console.log("This is the index: ", index)
+            emailNumber = b
+            console.log("This is the iteration number: ", emailNumber)
+            names[index][0] = names[index][0] + emailNumber
+
+            // Increments number by 1 if there is more than one duplicate
+            // if(duplicateIndexes.length > 1) {
+                
+            // }
+            
+        }
+        result = ""
+    }
+
+    result = ""
+    
     return names;
 }
 
