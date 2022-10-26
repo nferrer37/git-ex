@@ -100,7 +100,7 @@ server.post('/api', async(req, res) => {
             dateAdded: Number(empDate), 
             phoneNumber: phoneNumber,
             social: Number(social),
-            username: lastName.toLowerCase() + ', ' + firstName.toLowerCase(),
+            username: lastName + ', ' + firstName,
             uniqueId: i
         };
           

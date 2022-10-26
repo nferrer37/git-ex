@@ -26,6 +26,7 @@ let currentRow = null;
 var empNames = new Array();
 var nameChanged = false;
 var currentName = [];
+var result = [];
 
 
 // *FUNCTIONALITY* Reads selected file into client interface
@@ -1106,36 +1107,41 @@ const emailNames = () => {
 const validateEmail = (names) => {
 
     // Store the frequency of strings
-    var nameFreq = new Map();
-    var empArray = []
-    var result = ""
-    names.sort(function(a,b) {
-        return a[1]-b[1]
-    })
+    var empArray = [];
+    var validDuplicates = []
+    var dupTrue = false;
+
+    // names.sort(function(a,b) {
+    //     return a[1]-b[1]
+    // })
 
     // Stores names object as an array of names
     for (i = 0; i < names.length; i++) {
     empArray.push(names[i][0])
     }
-
-    console.log("Array of names: ", empArray)
+    // console.log("Array of names: ", empArray)
 
     // Filters array for only duplicate names
     result = empArray.filter((element, index) => {
-    return empArray.indexOf(element) !== index;
+
+        return empArray.indexOf(element) !== index;
     })
 
-    console.log("This is the filtered result: ", result)
+    // Validates the filtered duplicate names
+    validDuplicates = result.filter((element, index) => {
+
+        return result.indexOf(element) === index;
+    })
 
     var nameString = "" 
     var duplicateIndexes = []
     var emailNumber;
 
     // If there is at least one duplicate name
-    if(result.length > 0) {
+    if(validDuplicates.length > 0) {
 
         // For each array value of duplicate names
-        for(a = 0; a < result.length; a++) {
+        for(a = 0; a < validDuplicates.length; a++) {
 
             // For each name in names array
             for(i = 0; i < empArray.length; i++) {
@@ -1143,34 +1149,25 @@ const validateEmail = (names) => {
                 nameString = empArray[i]
 
                 // If name at i index in names array is the name from the duplicate array, push the index of that name to index array
-                if(nameString === result[a]) {
-                    console.log(i)
+                if(nameString === validDuplicates[a]) {
                     duplicateIndexes.push(i)
                 }
 
-               
             } 
             
-            console.log(duplicateIndexes)
-        }
-        // For every index value after the first iteration, duplicate emails have numbers added to end of name
-        for(b = 1; b < duplicateIndexes.length; b++) {
-            var index = duplicateIndexes[b]
-            console.log("This is the index: ", index)
-            emailNumber = b
-            console.log("This is the iteration number: ", emailNumber)
-            names[index][0] = names[index][0] + emailNumber
-
-            // Increments number by 1 if there is more than one duplicate
-            // if(duplicateIndexes.length > 1) {
-                
-            // }
+            // For every index value after the first iteration, duplicate emails have numbers added to end of name
+            for(b = 1; b < duplicateIndexes.length; b++) {
+                var index = duplicateIndexes[b]
+                console.log("This is the index: ", index)
+                emailNumber = b
+                console.log("This is the iteration number: ", emailNumber)
+                names[index][0] = names[index][0] + emailNumber
             
+            }
+            duplicateIndexes = []
         }
-        result = ""
+        
     }
-
-    result = ""
     
     return names;
 }
@@ -1315,6 +1312,7 @@ const database_function = (data) => {
 const dataToUse = () => {
 
     var tableRow = document.getElementById('empTable').rows;
+    var tableRows = "";
 
     if(tableRow.length < 1) {
         alert("Table does not contain any rows. Please populate table and try again")
@@ -1329,14 +1327,24 @@ const dataToUse = () => {
         if (confirm(confirmFetch) == true) {
         
     
-        
+        // Fix this *******************************
         // Adds each row into string variable and adds new line command to break the end of the row
         for(i = 0; i < tableRow.length; i++) {
+            tableRows = tableRow[i]
+            tableRows.cells[1].innerText = tableRows.cells[1].innerText.toLowerCase()
+            tableRows.cells[2].innerText = tableRows.cells[2].innerText.toLowerCase()
             finalString += tableRow[i].innerText + '\n';
             console.log(tableRow[i])
 
             // Clears file selector
             document.getElementById("fileSelect").value = null
+        }
+
+        for(i = 0; i < tableRow.length; i++) {
+            tableRows = tableRow[i]
+            tableRows.cells[1].innerText = tableRows.cells[1].innerText.toUpperCase()
+            var firstName = tableRows.cells[2].innerText
+            firstName = firstName[0].toUpperCase() + firstName.slice(1).toLowerCase();
         }
 
         return finalString;
